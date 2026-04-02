@@ -1,0 +1,548 @@
+.auth-wrapper {
+  position: relative;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  overflow: hidden;
+}
+
+/* Particle Canvas */
+.particle-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* 3D Card */
+.auth-card {
+  position: relative;
+  width: 100%;
+  max-width: 450px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 30px;
+  overflow: hidden;
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+  transition: transform 0.1s ease;
+  z-index: 2;
+}
+
+/* Morphing SVG Background */
+.morph-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 120px;
+  z-index: 1;
+}
+
+.auth-content {
+  position: relative;
+  padding: 2rem;
+  z-index: 2;
+}
+
+/* Header */
+.auth-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.auth-header h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+  background: linear-gradient(135deg, #1e293b, #334155);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.auth-header p {
+  color: #64748b;
+  font-size: 1rem;
+}
+
+/* High-tech Mode Toggle */
+.mode-toggle {
+  margin-bottom: 2rem;
+}
+
+.toggle-track {
+  position: relative;
+  height: 50px;
+  background: #f1f5f9;
+  border-radius: 25px;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.toggle-indicator {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: calc(50% - 3px);
+  height: calc(100% - 6px);
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 22px;
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.toggle-indicator.register {
+  transform: translateX(100%);
+}
+
+.indicator-text {
+  color: white;
+  font-size: 1.2rem;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+.toggle-option {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  color: #64748b;
+  transition: color 0.3s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.toggle-option.left {
+  left: 0;
+}
+
+.toggle-option.right {
+  right: 0;
+}
+
+.toggle-option.active {
+  color: white;
+}
+
+/* Glass-morphism Inputs */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.input-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  color: #667eea;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+.glass-input {
+  width: 100%;
+  padding: 1rem 1rem 1rem 3rem;
+  background: rgba(255, 255, 255, 0.8);
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.glass-input:focus {
+  outline: none;
+  border-color: #667eea;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+}
+
+.input-border {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.glass-input:focus ~ .input-border {
+  width: calc(100% - 2rem);
+}
+
+/* Error container */
+.error-container {
+  margin: 1rem 0;
+  padding: 1rem;
+  background: #fee2e2;
+  border-radius: 16px;
+  border: 1px solid #fecaca;
+  animation: shake 0.5s ease-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.error-item {
+  color: #dc2626;
+  margin: 0.25rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.error-icon {
+  font-size: 1rem;
+}
+
+/* Submit Button */
+.submit-btn {
+  position: relative;
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border: none;
+  border-radius: 16px;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.submit-btn.register-mode {
+  background: linear-gradient(135deg, #764ba2, #9f7aea);
+}
+
+.btn-text {
+  position: relative;
+  z-index: 2;
+}
+
+.btn-glow {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.submit-btn:hover .btn-glow {
+  opacity: 1;
+  animation: rotate 4s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px -5px rgba(102, 126, 234, 0.6);
+}
+
+.submit-btn:active {
+  transform: translateY(0);
+}
+
+/* Particle effect for button */
+.btn-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.submit-btn:hover .btn-particles::before,
+.submit-btn:hover .btn-particles::after {
+  content: '';
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+  animation: particleBurst 0.8s ease-out infinite;
+}
+
+.btn-particles::before {
+  top: 20%;
+  right: 20%;
+}
+
+.btn-particles::after {
+  bottom: 20%;
+  left: 20%;
+  animation-delay: 0.4s;
+}
+
+@keyframes particleBurst {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2);
+  }
+}
+
+/* Footer */
+.auth-footer {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.forgot-link {
+  color: #667eea;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.forgot-link:hover {
+  text-decoration: underline;
+}
+
+.guest-note {
+  color: #64748b;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: #f8fafc;
+  border-radius: 12px;
+  margin: 1rem 0 0;
+}
+
+.note-icon {
+  font-size: 1.2rem;
+}
+
+/* Animation för inkommande fält */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-group {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .auth-wrapper {
+    padding: 1rem;
+  }
+
+  .auth-card {
+    max-width: 100%;
+  }
+
+  .auth-header h2 {
+    font-size: 1.5rem;
+  }
+}
+/* Error state för inputs */
+.glass-input.error {
+  border-color: #ef4444;
+  background: #fef2f2;
+}
+
+.glass-input.error:focus {
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+}
+
+/* Förbättrad toggle animation */
+.toggle-indicator {
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.toggle-indicator.login {
+  transform: translateX(0);
+}
+
+.toggle-indicator.register {
+  transform: translateX(100%);
+}
+
+/* Loading state för submit */
+.submit-btn.loading {
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.submit-btn.loading .btn-text::after {
+  content: '';
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  margin-left: 0.5rem;
+  border: 2px solid white;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+/* Loading state */
+.submit-btn.loading {
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+.submit-btn.loading .btn-text::after {
+  content: '';
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  margin-left: 0.5rem;
+  border: 2px solid white;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+/* Glow canvas */
+.glow-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Uppdaterad auth-card med glow */
+.auth-card {
+  position: relative;
+  width: 100%;
+  max-width: 450px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 30px;
+  overflow: hidden;
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(255, 255, 255, 0.2),
+    0 0 30px rgba(102, 126, 234, 0.3);
+  transition: all 0.2s ease;
+  z-index: 2;
+  animation: cardPulse 4s ease-in-out infinite;
+}
+
+@keyframes cardPulse {
+  0%, 100% {
+    box-shadow: 
+      0 25px 50px -12px rgba(0, 0, 0, 0.25),
+      0 0 0 1px rgba(255, 255, 255, 0.2),
+      0 0 30px rgba(102, 126, 234, 0.3);
+  }
+  50% {
+    box-shadow: 
+      0 25px 50px -12px rgba(0, 0, 0, 0.25),
+      0 0 0 1px rgba(255, 255, 255, 0.2),
+      0 0 50px rgba(118, 75, 162, 0.5);
+  }
+}
+
+/* Uppdaterad toggle indicator med glow */
+.toggle-indicator {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: calc(50% - 3px);
+  height: calc(100% - 6px);
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 22px;
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 
+    0 4px 15px rgba(102, 126, 234, 0.5),
+    0 0 20px rgba(102, 126, 234, 0.3);
+}
+
+/* Uppdaterad submit knapp */
+.submit-btn {
+  position: relative;
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border: none;
+  border-radius: 16px;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+  box-shadow: 
+    0 10px 30px -5px rgba(102, 126, 234, 0.5),
+    0 0 20px rgba(102, 126, 234, 0.3);
+  animation: buttonPulse 3s ease-in-out infinite;
+}
+
+@keyframes buttonPulse {
+  0%, 100% {
+    box-shadow: 0 10px 30px -5px rgba(102, 126, 234, 0.5);
+  }
+  50% {
+    box-shadow: 0 15px 40px -5px rgba(118, 75, 162, 0.7);
+  }
+}

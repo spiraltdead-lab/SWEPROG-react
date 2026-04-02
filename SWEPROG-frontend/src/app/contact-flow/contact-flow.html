@@ -1,0 +1,209 @@
+<section class="contact-flow-section">
+  <div class="flow-wrapper">
+    <div class="flow-container" [class]="getContainerClass()">
+      
+      <!-- Header -->
+      <div class="flow-header">
+        <h2>{{ getModeTitle() }}</h2>
+        <p>{{ getModeDescription() }}</p>
+      </div>
+
+      <!-- Mode-väljare -->
+      <div class="mode-selector">
+        <button 
+          class="mode-btn" 
+          [class.active]="currentMode === 'login'"
+          (click)="setMode('login')">
+          <i>🔐</i> Logga in
+        </button>
+        <button 
+          class="mode-btn" 
+          [class.active]="currentMode === 'register'"
+          (click)="setMode('register')">
+          <i>✨</i> Skapa konto
+        </button>
+        <button 
+          class="mode-btn" 
+          [class.active]="currentMode === 'contact'"
+          (click)="setMode('contact')">
+          <i>📬</i> Kontakta oss
+        </button>
+      </div>
+
+      <!-- Formulär -->
+      <form (ngSubmit)="onSubmit()" class="flow-form">
+        
+        <!-- LOGIN-FÄLT -->
+        <div *ngIf="currentMode === 'login'">
+          <div class="form-group">
+            <label>E-post</label>
+            <div class="input-wrapper">
+              <i class="input-icon">📧</i>
+              <input 
+                type="email" 
+                [(ngModel)]="formData.loginEmail" 
+                name="loginEmail"
+                placeholder="din@epost.se">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Lösenord</label>
+            <div class="input-wrapper">
+              <i class="input-icon">🔒</i>
+              <input 
+                type="password" 
+                [(ngModel)]="formData.loginPassword" 
+                name="loginPassword"
+                placeholder="••••••••">
+            </div>
+          </div>
+        </div>
+
+        <!-- REGISTRERINGS-FÄLT -->
+        <div *ngIf="currentMode === 'register'">
+          <div class="form-group">
+            <label>Fullständigt namn</label>
+            <div class="input-wrapper">
+              <i class="input-icon">👤</i>
+              <input 
+                type="text" 
+                [(ngModel)]="formData.regName" 
+                name="regName"
+                placeholder="Anna Andersson">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>E-post</label>
+            <div class="input-wrapper">
+              <i class="input-icon">📧</i>
+              <input 
+                type="email" 
+                [(ngModel)]="formData.regEmail" 
+                name="regEmail"
+                placeholder="anna@foretag.se">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Lösenord</label>
+            <div class="input-wrapper">
+              <i class="input-icon">🔒</i>
+              <input 
+                type="password" 
+                [(ngModel)]="formData.regPassword" 
+                name="regPassword"
+                placeholder="Minst 8 tecken">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Bekräfta lösenord</label>
+            <div class="input-wrapper">
+              <i class="input-icon">✓</i>
+              <input 
+                type="password" 
+                [(ngModel)]="formData.regConfirmPassword" 
+                name="regConfirmPassword"
+                placeholder="Samma lösenord igen">
+            </div>
+          </div>
+
+          <p class="info-text">
+            <i>ℹ️</i> Som gäst får du tillgång till dummy-projekt för att utforska våra tjänster.
+          </p>
+        </div>
+
+        <!-- KONTAKT-FÄLT -->
+        <div *ngIf="currentMode === 'contact'">
+          <div class="form-group">
+            <label>Ditt namn</label>
+            <div class="input-wrapper">
+              <i class="input-icon">👤</i>
+              <input 
+                type="text" 
+                [(ngModel)]="formData.contactName" 
+                name="contactName"
+                placeholder="Kalle Karlsson">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>E-post</label>
+            <div class="input-wrapper">
+              <i class="input-icon">📧</i>
+              <input 
+                type="email" 
+                [(ngModel)]="formData.contactEmail" 
+                name="contactEmail"
+                placeholder="kalle@foretag.se">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Telefon (valfritt)</label>
+            <div class="input-wrapper">
+              <i class="input-icon">📞</i>
+              <input 
+                type="tel" 
+                [(ngModel)]="formData.contactPhone" 
+                name="contactPhone"
+                placeholder="070-123 45 67">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Meddelande</label>
+            <div class="input-wrapper">
+              <i class="input-icon">💬</i>
+              <textarea 
+                [(ngModel)]="formData.contactMessage" 
+                name="contactMessage"
+                placeholder="Vad kan vi hjälpa dig med?"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Felmeddelanden -->
+        <div class="error-messages" *ngIf="errors.length > 0">
+          <p *ngFor="let error of errors">
+            <i>⚠️</i> {{ error }}
+          </p>
+        </div>
+
+        <!-- Success-meddelande -->
+        <div class="success-message" *ngIf="successMessage">
+          <i>✅</i> {{ successMessage }}
+        </div>
+
+        <!-- Submit-knapp -->
+        <button 
+          type="submit" 
+          class="submit-btn"
+          [class.loading]="isAnimating">
+          {{ getButtonText() }}
+        </button>
+      </form>
+
+      <!-- Footer-länkar -->
+      <div class="flow-footer">
+        <ng-container [ngSwitch]="currentMode">
+          <p *ngSwitchCase="'login'">
+            Har du inget konto? 
+            <a href="#" (click)="setMode('register'); $event.preventDefault()">Skapa som gäst</a>
+          </p>
+          <p *ngSwitchCase="'register'">
+            Redan medlem? 
+            <a href="#" (click)="setMode('login'); $event.preventDefault()">Logga in</a>
+          </p>
+          <p *ngSwitchCase="'contact'">
+            Föredrar du att ringa? 
+            <a href="tel:+46123456789">+46 123 456 789</a>
+          </p>
+        </ng-container>
+      </div>
+
+    </div>
+  </div>
+</section>

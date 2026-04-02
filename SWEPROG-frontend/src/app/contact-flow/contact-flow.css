@@ -1,0 +1,439 @@
+.contact-flow-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Bakgrundsanimation */
+.contact-flow-section::before {
+  content: '';
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 50%);
+  animation: rotate 30s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.flow-wrapper {
+  width: 100%;
+  max-width: 500px;
+  position: relative;
+  z-index: 10;
+}
+
+.flow-container {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 24px;
+  padding: 2.5rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  transform-origin: center;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Mode-specifika animationer */
+.flow-container.mode-login {
+  transform: scale(1);
+}
+
+.flow-container.mode-register {
+  transform: scale(1.02);
+  box-shadow: 0 30px 60px -12px rgba(102, 126, 234, 0.4);
+}
+
+.flow-container.mode-contact {
+  transform: scale(1.01);
+  box-shadow: 0 30px 60px -12px rgba(118, 75, 162, 0.4);
+}
+
+.flow-container.animating {
+  opacity: 0.8;
+  transform: scale(0.98);
+}
+
+/* Header-sektion */
+.flow-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  animation: slideDown 0.5s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.flow-header h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 0.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.flow-header p {
+  color: #64748b;
+  font-size: 1rem;
+}
+
+/* Mode-väljare */
+.mode-selector {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding: 0.5rem;
+  background: #f1f5f9;
+  border-radius: 50px;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.mode-btn {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 50px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: transparent;
+  color: #64748b;
+  position: relative;
+  overflow: hidden;
+}
+
+.mode-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.mode-btn:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.mode-btn.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.mode-btn i {
+  margin-right: 0.5rem;
+}
+
+/* Formulär */
+.flow-form {
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #1e293b;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.form-group.focused label {
+  color: #667eea;
+  transform: translateX(5px);
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 1rem;
+  color: #94a3b8;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+.form-group.focused .input-icon {
+  color: #667eea;
+  transform: scale(1.1);
+}
+
+.flow-form input,
+.flow-form textarea {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.8rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.flow-form textarea {
+  min-height: 120px;
+  resize: vertical;
+  padding-left: 2.8rem;
+}
+
+.flow-form input:focus,
+.flow-form textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+}
+
+.flow-form input::placeholder,
+.flow-form textarea::placeholder {
+  color: #cbd5e1;
+}
+
+/* Valideringsmeddelanden */
+.error-messages {
+  margin: 1rem 0;
+  padding: 1rem;
+  background: #fee2e2;
+  border-radius: 12px;
+  border: 1px solid #fecaca;
+  animation: shake 0.5s ease-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.error-messages p {
+  color: #dc2626;
+  margin: 0.25rem 0;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.error-messages i {
+  font-size: 1rem;
+}
+
+/* Success-meddelande */
+.success-message {
+  margin: 1rem 0;
+  padding: 1rem;
+  background: #dcfce7;
+  border-radius: 12px;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+  text-align: center;
+  animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Submit-knapp */
+.submit-btn {
+  width: 100%;
+  padding: 1rem;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.submit-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+.submit-btn:hover::before {
+  left: 100%;
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px -5px rgba(102, 126, 234, 0.5);
+}
+
+.submit-btn:active {
+  transform: translateY(0);
+}
+
+.submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Länkar */
+.flow-footer {
+  margin-top: 2rem;
+  text-align: center;
+  color: #64748b;
+}
+
+.flow-footer a {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.flow-footer a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  transition: width 0.3s ease;
+}
+
+.flow-footer a:hover::after {
+  width: 100%;
+}
+
+/* Extra animation för fält som visas/döljs */
+.form-group {
+  animation: fadeInField 0.5s ease-out;
+  animation-fill-mode: both;
+}
+
+@keyframes fadeInField {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Stagger animation för fälten */
+.form-group:nth-child(1) { animation-delay: 0.1s; }
+.form-group:nth-child(2) { animation-delay: 0.2s; }
+.form-group:nth-child(3) { animation-delay: 0.3s; }
+.form-group:nth-child(4) { animation-delay: 0.4s; }
+.form-group:nth-child(5) { animation-delay: 0.5s; }
+
+/* Responsiv design */
+@media (max-width: 640px) {
+  .contact-flow-section {
+    padding: 1rem;
+  }
+
+  .flow-container {
+    padding: 1.5rem;
+  }
+
+  .flow-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .mode-selector {
+    flex-direction: column;
+    border-radius: 24px;
+  }
+
+  .mode-btn {
+    border-radius: 24px;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+}
+
+/* Loading spinner för submit */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.submit-btn.loading {
+  pointer-events: none;
+}
+
+.submit-btn.loading::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  border: 2px solid white;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}

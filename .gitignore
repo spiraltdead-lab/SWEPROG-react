@@ -1,0 +1,19 @@
+# Miljöfiler
+SWEPROG-backend/.env
+SWEPROG-backend/.env.local
+
+# Dependencies
+SWEPROG-backend/node_modules/
+SWEPROG-frontend/node_modules/
+
+# Angular build
+SWEPROG-frontend/.angular/
+SWEPROG-frontend/dist/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db

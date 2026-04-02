@@ -1,0 +1,199 @@
+<div class="users-container">
+  <!-- Header -->
+  <div class="users-header">
+    <h1>{{ t('admin.users.title') }}</h1>
+    <button class="btn btn-primary" (click)="openCreateUser()">
+      <span>+</span> {{ t('admin.users.create') }}
+    </button>
+  </div>
+
+  <!-- Global feedback (success/error from table actions) -->
+  <div class="feedback-bar feedback-success" *ngIf="successMessage">
+    <span>✓ {{ successMessage }}</span>
+  </div>
+  <div class="feedback-bar feedback-error" *ngIf="errorMessage">
+    <span>{{ errorMessage }}</span>
+    <button class="feedback-close" (click)="errorMessage = ''">×</button>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters-bar">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (input)="applyFilters()"
+        [placeholder]="t('admin.users.search')"
+        class="search-input"
+      >
+    </div>
+
+    <div class="filter-group">
+      <select [(ngModel)]="selectedRole" (change)="applyFilters()" class="filter-select">
+        <option value="all">{{ t('admin.users.roles.AllRoles') }}</option>
+        <option *ngFor="let role of assignableRoles" [value]="role.value">{{ t('admin.users.roles.' + role.value) }}</option>
+      </select>
+
+      <select [(ngModel)]="selectedStatus" (change)="applyFilters()" class="filter-select">
+        <option value="all">{{ t('admin.users.statuses.AllStatuses') }}</option>
+        <option *ngFor="let s of statuses" [value]="s.value">{{ t('admin.users.statuses.' + s.value) }}</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Laddar användare...</p>
+  </div>
+
+  <!-- Users Table -->
+  <div class="table-container" *ngIf="!loading">
+    <table class="users-table">
+      <thead>
+        <tr>
+          <th>{{ t('admin.users.fields.name') }}</th>
+          <th>{{ t('admin.users.fields.email') }}</th>
+          <th>{{ t('admin.users.fields.role') }}</th>
+          <th>{{ t('admin.users.fields.status') }}</th>
+          <th>{{ t('admin.users.fields.created') }}</th>
+          <th>{{ t('admin.users.fields.lastLogin') }}</th>
+          <th>{{ t('dashboard.quickActions') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!--show row for super_admin if user is super_admin-->
+        <tr *ngFor="let user of filteredUsers ">
+          <td class="td-name">{{ user.name }}</td>
+          <td class="td-email">{{ user.email }}</td>
+          <td>
+            <span class="role-badge"
+                  [class.role-admin]="user.role === 'admin' || user.role === 'super_admin'"
+                  [class.role-user]="user.role === 'user'"
+                  [class.role-guest]="user.role === 'guest'">
+              {{ t('admin.users.roles.' + user.role) || user.role }}
+            </span>
+          </td>
+          <td>
+            <span class="status-badge" [class.active]="user.status === 'active'">
+              {{ t('admin.users.statuses.' + user.status) }}
+            </span>
+          </td>
+          <td class="td-date">{{ user.createdAt | date:'yyyy-MM-dd' }}</td>
+          <td class="td-date">{{ user.lastLogin ? (user.lastLogin | date:'yyyy-MM-dd') : '—' }}</td>
+          <td class="actions">
+            <button class="action-btn edit"  (click)="openEditUser(user)"     title="Redigera">✏️</button>
+            <button class="action-btn pw"   (click)="openSetPassword(user)"  title="Ändra lösenord">🔒</button>
+            <button class="action-btn toggle" (click)="toggleUserStatus(user)"
+                    [title]="user.status === 'active' ? 'Inaktivera' : 'Aktivera'">
+              {{ user.status === 'active' ? '🔴' : '🟢' }}
+            </button>
+            <button class="action-btn reset" (click)="resetPassword(user)" title="Återställ lösenord">🔑</button>
+            <button class="action-btn delete" (click)="deleteUser(user)" title="Ta bort">🗑️</button>
+          </td>
+        </tr>
+        <tr *ngIf="filteredUsers.length === 0">
+          <td colspan="7" class="no-results">Inga användare matchar filtret.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Set Password Modal -->
+  <div class="modal" *ngIf="showPwModal" (click)="closeSetPasswordModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>🔒 {{ t('admin.users.setPassword') || 'Sätt lösenord' }} — {{ pwTargetUser?.name }}</h2>
+        <button class="close-btn" (click)="closeSetPasswordModal()">×</button>
+      </div>
+
+      <div class="modal-error" *ngIf="adminPwError">⚠️ {{ adminPwError }}</div>
+      <div class="modal-success" *ngIf="adminPwSuccess">✓ {{ t('admin.users.passwordUpdated') || 'Lösenordet har uppdaterats' }}</div>
+
+      <form (ngSubmit)="saveAdminPassword()" class="modal-form">
+        <div class="form-group">
+          <label>{{ t('profile.newPassword') || 'Nytt lösenord' }}</label>
+          <input type="password" [(ngModel)]="adminPwNew" name="adminPwNew"
+                 class="form-input" placeholder="Minst 8 tecken">
+        </div>
+        <div class="form-group">
+          <label>{{ t('auth.confirmPassword') || 'Bekräfta lösenord' }}</label>
+          <input type="password" [(ngModel)]="adminPwConfirm" name="adminPwConfirm"
+                 class="form-input" placeholder="Upprepa lösenordet"
+                 [class.input-mismatch]="adminPwConfirm && adminPwNew !== adminPwConfirm">
+          <span class="field-hint error" *ngIf="adminPwConfirm && adminPwNew !== adminPwConfirm">
+            {{ t('auth.errors.passwordMismatch') || 'Lösenorden matchar inte' }}
+          </span>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" (click)="closeSetPasswordModal()">{{ t('common.cancel') || 'Avbryt' }}</button>
+          <button type="submit" class="btn btn-primary" [disabled]="adminPwSaving">
+            {{ adminPwSaving ? (t('common.saving') || 'Sparar...') : (t('admin.users.setPassword') || 'Spara lösenord') }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Create/Edit User Modal -->
+  <div class="modal" *ngIf="showUserModal" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{ editingUser ? 'Redigera användare' : 'Skapa användare' }}</h2>
+        <button class="close-btn" (click)="closeModal()">×</button>
+      </div>
+
+      <!-- Modal error -->
+      <div class="modal-error" *ngIf="modalError">
+        ⚠️ {{ modalError }}
+      </div>
+
+      <form (ngSubmit)="saveUser()" class="modal-form" #userFormRef="ngForm">
+        <div class="form-group">
+          <label>Namn</label>
+          <input type="text" [(ngModel)]="userForm.name" name="name" required
+                 class="form-input" placeholder="Fullständigt namn">
+        </div>
+
+        <div class="form-group">
+          <label>E-post</label>
+          <input type="email" [(ngModel)]="userForm.email" name="email" required
+                 class="form-input" placeholder="namn@example.com">
+        </div>
+
+        <div class="form-group">
+          <label>Roll</label>
+          <select [(ngModel)]="userForm.role" name="role" class="form-select">
+            <option *ngFor="let role of assignableRoles" [value]="role.value">{{ t(role.labelKey) }}</option>
+          </select>
+        </div>
+
+        <ng-container *ngIf="!editingUser">
+          <div class="form-group">
+            <label>Lösenord</label>
+            <input type="password" [(ngModel)]="userForm.password" name="password" required
+                   class="form-input" placeholder="Minst 8 tecken">
+          </div>
+
+          <div class="form-group">
+            <label>Bekräfta lösenord</label>
+            <input type="password" [(ngModel)]="userForm.confirmPassword" name="confirmPassword" required
+                   class="form-input" placeholder="Upprepa lösenordet"
+                   [class.input-mismatch]="userForm.confirmPassword && userForm.password !== userForm.confirmPassword">
+            <span class="field-hint error" *ngIf="userForm.confirmPassword && userForm.password !== userForm.confirmPassword">
+              Lösenorden matchar inte
+            </span>
+          </div>
+        </ng-container>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">Avbryt</button>
+          <button type="submit" class="btn btn-primary" [disabled]="saving">
+            {{ saving ? 'Sparar...' : 'Spara' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

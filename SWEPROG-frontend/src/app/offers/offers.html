@@ -1,0 +1,161 @@
+<div class="offers-page">
+  <!-- Hero Section -->
+  <section class="offers-hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          {{ t('offers.hero.title') }}
+        </h1>
+        <p class="hero-subtitle">
+          {{ t('offers.hero.subtitle') }}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Offers Grid -->
+  <section class="offers-grid-section">
+    <div class="container">
+      <div class="offers-grid">
+        <div class="offer-card" *ngFor="let offer of offers" [class.highlight]="offer.highlight">
+          <!-- Badge för highlight-erbjudande -->
+          <div class="offer-badge" *ngIf="offer.badgeKey">{{ t(offer.badgeKey) }}</div>
+          
+          <!-- Rabattmärke -->
+          <div class="discount-badge" *ngIf="offer.discount">
+            <span class="discount-text">-{{ offer.discount }}%</span>
+          </div>
+
+          <div class="offer-icon">{{ offer.icon }}</div>
+          
+          <h2 class="offer-title">{{ t(offer.titleKey) }}</h2>
+          <p class="offer-description">{{ t(offer.descriptionKey) }}</p>
+          
+          <div class="offer-price">
+            <span class="current-price">{{ offer.price | currency:'USD':'symbol':'1.0-0' }}</span> 
+            <!-- <span class="price-unit">/{{ t(offer.priceUnit) }}</span> -->
+            <span class="original-price" *ngIf="offer.originalPrice">
+              {{ offer.originalPrice | currency:'USD':'symbol':'1.0-0' }}
+            </span>
+          </div>
+          
+          <div class="offer-savings" *ngIf="offer.originalPrice">
+            <span class="savings-badge">
+              🔥 {{ t('offers.save') }} {{ calculateSavings(offer.originalPrice, offer.price) | currency:'USD':'symbol':'1.0-0' }}
+            </span>
+          </div>
+          
+          <ul class="offer-features">
+            <li *ngFor="let featureKey of offer.featureKeys">
+              <span class="feature-icon">✓</span>
+              {{ t(featureKey) }}
+            </li>
+          </ul>
+          
+          <div class="offer-card-actions">
+            <button class="offer-info-btn" (click)="openModal(offer)">
+              {{ t('offers.moreInfo') }}
+            </button>
+            <button class="offer-cta" [class.highlight-cta]="offer.highlight" (click)="selectOffer(offer)">
+              {{ t(offer.ctaKey) }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Comparison Section -->
+  <section class="features-section">
+    <div class="container">
+      <h2 class="section-title">
+        {{ t('offers.comparison.title') }}
+      </h2>
+      
+      <div class="features-grid">
+        <div class="feature-item" *ngFor="let feature of commonFeatures">
+          <div class="feature-icon">{{ feature.icon }}</div>
+          <h3>{{ t(feature.titleKey) }}</h3>
+          <p>{{ t(feature.descriptionKey) }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq-section">
+    <div class="container">
+      <h2 class="section-title">
+        {{ t('offers.faq.title') }}
+      </h2>
+      
+      <div class="faq-grid">
+        <div class="faq-item" *ngFor="let faq of faqs">
+          <h3>{{ t(faq.questionKey) }}</h3>
+          <p>{{ t(faq.answerKey) }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container">
+      <h2>
+        {{ t('offers.cta.title') }}
+      </h2>
+      <p>
+        {{ t('offers.cta.subtitle') }}
+      </p>
+      <div class="cta-buttons">
+        <a routerLink="/" [queryParams]="{scrollTo: 'contact'}" class="btn btn-primary btn-large">
+          {{ t('contact.title') }}
+        </a>
+        <a routerLink="/projects" class="btn btn-outline">
+          {{ t('projects.title') }}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Detaljmodal -->
+  <div class="modal-overlay" *ngIf="selectedModalOffer" (click)="closeModal()">
+    <div class="modal-box" (click)="$event.stopPropagation()">
+      <button class="modal-close-btn" (click)="closeModal()">✕</button>
+
+      <div class="modal-header">
+        <div class="modal-icon">{{ selectedModalOffer.icon }}</div>
+        <div class="modal-badge" *ngIf="selectedModalOffer.badgeKey">{{ t(selectedModalOffer.badgeKey) }}</div>
+      </div>
+
+      <h2 class="modal-title">{{ t(selectedModalOffer.titleKey) }}</h2>
+
+      <div class="modal-price">
+        <span class="modal-current-price">{{ selectedModalOffer.price | currency:'USD':'symbol':'1.0-0' }}</span>
+        <span class="modal-original-price" *ngIf="selectedModalOffer.originalPrice">
+          {{ selectedModalOffer.originalPrice | currency:'USD':'symbol':'1.0-0' }}
+        </span>
+        <span class="modal-savings" *ngIf="selectedModalOffer.originalPrice">
+          🔥 {{ t('offers.save') }} {{ calculateSavings(selectedModalOffer.originalPrice!, selectedModalOffer.price) | currency:'USD':'symbol':'1.0-0' }}
+        </span>
+      </div>
+
+      <p class="modal-details">{{ t(selectedModalOffer.detailsKey) }}</p>
+
+      <ul class="modal-features">
+        <li *ngFor="let featureKey of selectedModalOffer.featureKeys">
+          <span class="modal-feature-check">✓</span>
+          {{ t(featureKey) }}
+        </li>
+      </ul>
+
+      <div class="modal-actions">
+        <button class="modal-btn-select"
+                [class.highlight-select]="selectedModalOffer.highlight"
+                (click)="selectOffer(selectedModalOffer)">
+          {{ t('offers.modal.select') }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

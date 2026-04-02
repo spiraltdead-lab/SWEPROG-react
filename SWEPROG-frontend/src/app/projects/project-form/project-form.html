@@ -1,0 +1,365 @@
+<div class="pf-root">
+
+  <!-- Progress bar -->
+  <div class="pf-progress-bar">
+    <div class="pf-progress-fill"
+         [style.width.%]="progress"
+         [style.background]="'linear-gradient(90deg, #667eea, #764ba2)'">
+    </div>
+    <span class="pf-progress-label">{{ progress }}% ifyllt</span>
+  </div>
+
+  <!-- Header -->
+  <div class="pf-header">
+    <button class="pf-back-btn" routerLink="/projects">
+      <span class="pf-back-arrow">←</span> Tillbaka
+    </button>
+    <div class="pf-title-block">
+      <h1 class="pf-title">{{ isEditMode ? 'Redigera projekt' : 'Nytt projekt' }}</h1>
+      <p class="pf-subtitle">{{ isEditMode ? 'Uppdatera projektinformation' : 'Fyll i detaljer för det nya projektet' }}</p>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div class="pf-loading" *ngIf="loading">
+    <div class="pf-spinner"></div>
+    <p>Laddar projekt...</p>
+  </div>
+
+  <!-- Error banner -->
+  <div class="pf-error-banner" *ngIf="errorMessage">
+    <span>⚠️ {{ errorMessage }}</span>
+    <button (click)="errorMessage = ''">×</button>
+  </div>
+
+  <!-- Main layout -->
+  <div class="pf-layout" *ngIf="!loading">
+
+    <!-- ── Left: Form ── -->
+    <form class="pf-form" (ngSubmit)="submit()" novalidate>
+
+      <!-- Section 1: Grundinfo -->
+      <div class="pf-section" style="animation-delay: 0.05s">
+        <div class="pf-section-header">
+          <span class="pf-section-icon">📋</span>
+          <h2>Grundinformation</h2>
+        </div>
+
+        <div class="pf-field">
+          <label class="pf-label">Projektnamn <span class="pf-required">*</span></label>
+          <input class="pf-input" [class.pf-input-error]="errors['title']"
+                 type="text" [(ngModel)]="project.title_sv" name="title_sv"
+                 placeholder="Ex. Ny webbplats för Företaget AB">
+          <span class="pf-field-error" *ngIf="errors['title']">{{ errors['title'] }}</span>
+        </div>
+
+        <div class="pf-field">
+          <label class="pf-label">Projekttyp</label>
+          <div class="pf-select-wrapper">
+            <select class="pf-select" [(ngModel)]="project.project_type" name="project_type">
+              <option value="">Välj typ...</option>
+              <option *ngFor="let pt of projectTypes" [value]="pt">{{ pt }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="pf-field">
+          <label class="pf-label">Beskrivning</label>
+          <textarea class="pf-textarea" [(ngModel)]="project.description_sv"
+                    name="description_sv" rows="4"
+                    placeholder="Beskriv projektets syfte, mål och scope..."></textarea>
+        </div>
+      </div>
+
+      <!-- Section 2: Teknologier -->
+      <div class="pf-section" style="animation-delay: 0.1s">
+        <div class="pf-section-header">
+          <span class="pf-section-icon">⚙️</span>
+          <h2>Teknologier</h2>
+          <span class="pf-badge" *ngIf="(project.technologies?.length ?? 0) > 0">
+            {{ project.technologies?.length }} valda
+          </span>
+        </div>
+
+        <div *ngFor="let group of techGroups" class="pf-tech-group">
+          <p class="pf-tech-category">{{ group.category }}</p>
+          <div class="pf-tech-grid">
+            <button type="button"
+                    *ngFor="let tech of group.techs"
+                    class="pf-tech-card"
+                    [class.pf-tech-card--selected]="isTechSelected(tech.name)"
+                    (click)="toggleTech(tech.name)">
+              <span class="pf-tech-icon">{{ tech.icon }}</span>
+              <span class="pf-tech-name">{{ tech.name }}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Kundinformation -->
+      <div class="pf-section" style="animation-delay: 0.15s">
+        <div class="pf-section-header">
+          <span class="pf-section-icon">👥</span>
+          <h2>Kundinformation</h2>
+        </div>
+
+        <div class="pf-field">
+          <label class="pf-label">Kundtyp</label>
+          <div class="pf-client-types">
+            <button type="button"
+                    *ngFor="let ct of clientTypes"
+                    class="pf-client-type"
+                    [class.pf-client-type--selected]="project.client_type === ct.value"
+                    (click)="project.client_type = ct.value">
+              <span class="pf-ct-icon">{{ ct.icon }}</span>
+              <span class="pf-ct-label">{{ ct.label }}</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="pf-row">
+          <div class="pf-field">
+            <label class="pf-label">Kundnamn <span class="pf-required">*</span></label>
+            <input class="pf-input" [class.pf-input-error]="errors['client']"
+                   type="text" [(ngModel)]="project.client_name" name="client_name"
+                   placeholder="Företagets eller personens namn">
+            <span class="pf-field-error" *ngIf="errors['client']">{{ errors['client'] }}</span>
+          </div>
+          <div class="pf-field">
+            <label class="pf-label">Kontaktperson</label>
+            <input class="pf-input" type="text" [(ngModel)]="project.contact_person"
+                   name="contact_person" placeholder="Namn på kontaktpersonen">
+          </div>
+        </div>
+
+        <div class="pf-row">
+          <div class="pf-field">
+            <label class="pf-label">E-post</label>
+            <input class="pf-input" type="email" [(ngModel)]="project.client_email"
+                   name="client_email" placeholder="kontakt@foretag.se">
+          </div>
+          <div class="pf-field">
+            <label class="pf-label">Telefon</label>
+            <input class="pf-input" type="tel" [(ngModel)]="project.client_phone"
+                   name="client_phone" placeholder="+46 70 000 00 00">
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 4: Datum & Status -->
+      <div class="pf-section" style="animation-delay: 0.2s">
+        <div class="pf-section-header">
+          <span class="pf-section-icon">📅</span>
+          <h2>Datum & Status</h2>
+        </div>
+
+        <div class="pf-row">
+          <div class="pf-field">
+            <label class="pf-label">Startdatum</label>
+            <input class="pf-input pf-input-date" type="date"
+                   [(ngModel)]="project.start_date" name="start_date">
+          </div>
+          <div class="pf-field">
+            <label class="pf-label">Deadline</label>
+            <input class="pf-input pf-input-date" type="date"
+                   [(ngModel)]="project.deadline" name="deadline">
+          </div>
+        </div>
+
+        <div class="pf-field">
+          <label class="pf-label">Status</label>
+          <div class="pf-status-group">
+            <button type="button" class="pf-status-btn"
+                    [class.pf-status-btn--new]="project.status === 'new'"
+                    (click)="project.status = 'new'">
+              <span>🔵</span> Nytt
+            </button>
+            <button type="button" class="pf-status-btn"
+                    [class.pf-status-btn--ongoing]="project.status === 'ongoing'"
+                    (click)="project.status = 'ongoing'">
+              <span>🟠</span> Pågående
+            </button>
+            <button type="button" class="pf-status-btn"
+                    [class.pf-status-btn--completed]="project.status === 'completed'"
+                    (click)="project.status = 'completed'">
+              <span>🟢</span> Avslutat
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 5: Priskalkylator -->
+      <div class="pf-section" style="animation-delay: 0.25s">
+        <div class="pf-section-header">
+          <span class="pf-section-icon">💰</span>
+          <h2>Priskalkylator</h2>
+        </div>
+
+        <div class="pf-row">
+          <div class="pf-field">
+            <label class="pf-label">Antal timmar</label>
+            <input class="pf-input" type="number" [(ngModel)]="hours"
+                   name="hours" min="0" placeholder="0"
+                   (ngModelChange)="onPriceChange()">
+          </div>
+          <div class="pf-field">
+            <label class="pf-label">Timpris (SEK)</label>
+            <input class="pf-input" type="number" [(ngModel)]="hourlyRate"
+                   name="hourlyRate" min="0" placeholder="1 000"
+                   (ngModelChange)="onPriceChange()">
+          </div>
+        </div>
+
+        <div class="pf-price-result" *ngIf="calculatedPrice > 0">
+          <span class="pf-price-label">Beräknat pris</span>
+          <span class="pf-price-value">{{ calculatedPrice | number }} SEK</span>
+        </div>
+
+        <div class="pf-toggles">
+          <div class="pf-toggle-row">
+            <div class="pf-toggle-info">
+              <span class="pf-toggle-title">Redan betald</span>
+              <span class="pf-toggle-desc">Markera om betalning redan är mottagen</span>
+            </div>
+            <label class="pf-toggle">
+              <input type="checkbox" [(ngModel)]="project.is_paid" name="is_paid">
+              <span class="pf-toggle-track">
+                <span class="pf-toggle-thumb"></span>
+              </span>
+            </label>
+          </div>
+
+          <div class="pf-toggle-row">
+            <div class="pf-toggle-info">
+              <span class="pf-toggle-title">Hosting / Drift</span>
+              <span class="pf-toggle-desc">Projektet inkluderar hosting eller drift</span>
+            </div>
+            <label class="pf-toggle">
+              <input type="checkbox" [(ngModel)]="project.has_hosting" name="has_hosting">
+              <span class="pf-toggle-track">
+                <span class="pf-toggle-thumb"></span>
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <div class="pf-field pf-domain-field" *ngIf="project.has_hosting">
+          <label class="pf-label">Domän / Serveradress</label>
+          <input class="pf-input" type="text" [(ngModel)]="project.domain"
+                 name="domain" placeholder="www.domän.se">
+        </div>
+      </div>
+
+      <!-- Section 6: Intern kommentar -->
+      <div class="pf-section" style="animation-delay: 0.3s">
+        <div class="pf-section-header">
+          <span class="pf-section-icon">🔒</span>
+          <h2>Intern kommentar</h2>
+          <span class="pf-internal-badge">Syns bara internt</span>
+        </div>
+        <div class="pf-field">
+          <textarea class="pf-textarea" [(ngModel)]="project.internal_comment"
+                    name="internal_comment" rows="3"
+                    placeholder="Interna anteckningar, risker, specialkrav..."></textarea>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="pf-actions">
+        <button type="button" class="pf-btn-cancel" routerLink="/projects">
+          Avbryt
+        </button>
+        <button type="submit" class="pf-btn-submit" [disabled]="saving">
+          <span class="pf-btn-spinner" *ngIf="saving"></span>
+          <span *ngIf="!saving">{{ isEditMode ? '💾 Spara ändringar' : '🚀 Skapa projekt' }}</span>
+          <span *ngIf="saving">Sparar...</span>
+        </button>
+      </div>
+
+    </form>
+
+    <!-- ── Right: Live Preview ── -->
+    <aside class="pf-preview">
+      <div class="pf-preview-card">
+        <div class="pf-preview-header">
+          <span class="pf-preview-eye">👁️</span>
+          <h3>Live-förhandsvisning</h3>
+        </div>
+
+        <div class="pf-preview-body">
+          <h2 class="pf-preview-title">
+            {{ project.title_sv || 'Namnlöst projekt' }}
+          </h2>
+
+          <div class="pf-preview-tags">
+            <span class="pf-preview-type" *ngIf="project.project_type">
+              {{ project.project_type }}
+            </span>
+            <span class="pf-preview-status"
+                  [class.pf-preview-status--new]="project.status === 'new'"
+                  [class.pf-preview-status--ongoing]="project.status === 'ongoing'"
+                  [class.pf-preview-status--completed]="project.status === 'completed'">
+              {{ getStatusLabel(project.status) }}
+            </span>
+            <span class="pf-preview-paid" *ngIf="project.is_paid">✓ Betald</span>
+          </div>
+
+          <p class="pf-preview-desc" *ngIf="project.description_sv">
+            {{ project.description_sv }}
+          </p>
+
+          <div class="pf-preview-section" *ngIf="project.client_name">
+            <span class="pf-preview-section-label">Kund</span>
+            <span class="pf-preview-section-value">{{ project.client_name }}</span>
+          </div>
+
+          <div class="pf-preview-section" *ngIf="project.contact_person">
+            <span class="pf-preview-section-label">Kontakt</span>
+            <span class="pf-preview-section-value">{{ project.contact_person }}</span>
+          </div>
+
+          <div class="pf-preview-dates" *ngIf="project.start_date || project.deadline">
+            <div class="pf-preview-date" *ngIf="project.start_date">
+              <span class="pf-preview-section-label">Start</span>
+              <span class="pf-preview-section-value">{{ project.start_date | date:'d MMM y' }}</span>
+            </div>
+            <div class="pf-preview-date" *ngIf="project.deadline">
+              <span class="pf-preview-section-label">Deadline</span>
+              <span class="pf-preview-section-value">{{ project.deadline | date:'d MMM y' }}</span>
+            </div>
+          </div>
+
+          <div class="pf-preview-section" *ngIf="calculatedPrice > 0">
+            <span class="pf-preview-section-label">Pris</span>
+            <span class="pf-preview-price">{{ calculatedPrice | number }} SEK</span>
+          </div>
+
+          <div class="pf-preview-techs" *ngIf="(project.technologies?.length ?? 0) > 0">
+            <span class="pf-preview-section-label">Teknologier</span>
+            <div class="pf-preview-tech-list">
+              <span *ngFor="let tech of project.technologies" class="pf-preview-tech">
+                {{ tech }}
+              </span>
+            </div>
+          </div>
+
+          <div class="pf-preview-hosting" *ngIf="project.has_hosting">
+            <span class="pf-hosting-badge">🌐 Hosting inkluderat</span>
+            <span class="pf-preview-section-value" *ngIf="project.domain">{{ project.domain }}</span>
+          </div>
+        </div>
+
+        <!-- Progress ring -->
+        <div class="pf-preview-progress">
+          <svg class="pf-ring" viewBox="0 0 56 56">
+            <circle cx="28" cy="28" r="24" class="pf-ring-bg"/>
+            <circle cx="28" cy="28" r="24" class="pf-ring-fill"
+                    [style.stroke-dashoffset]="150.8 - (150.8 * progress / 100)"/>
+          </svg>
+          <span class="pf-ring-label">{{ progress }}%</span>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</div>

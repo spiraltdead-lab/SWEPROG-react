@@ -1,0 +1,164 @@
+<div class="pd-root">
+
+  <!-- Loading -->
+  <div class="pd-loading" *ngIf="loading">
+    <div class="pd-spinner"></div>
+    <p>Laddar projekt...</p>
+  </div>
+
+  <!-- Error -->
+  <div class="pd-error" *ngIf="errorMessage">
+    <span>⚠️ {{ errorMessage }}</span>
+    <button routerLink="/projects">← Tillbaka till projekt</button>
+  </div>
+
+  <ng-container *ngIf="!loading && project">
+
+    <!-- Header -->
+    <div class="pd-header">
+      <button class="pd-back-btn" routerLink="/projects">
+        <span>←</span> Tillbaka
+      </button>
+      <div class="pd-header-actions" *ngIf="authService.isAdmin()">
+        <button class="pd-edit-btn" [routerLink]="['/projects', project.id, 'edit']">
+          ✏️ Redigera
+        </button>
+      </div>
+    </div>
+
+    <!-- Hero card -->
+    <div class="pd-hero">
+      <div class="pd-hero-left">
+        <div class="pd-tags">
+          <span *ngIf="project.project_type" class="pd-tag-type">{{ project.project_type }}</span>
+          <span class="pd-status-badge"
+                [class.pd-status--new]="project.status === 'new'"
+                [class.pd-status--ongoing]="project.status === 'ongoing'"
+                [class.pd-status--completed]="project.status === 'completed'">
+            {{ getStatusText(project.status) }}
+          </span>
+          <span *ngIf="project.is_paid" class="pd-tag-paid">✓ Betald</span>
+          <span *ngIf="project.has_hosting" class="pd-tag-hosting">🌐 Hosting</span>
+        </div>
+        <h1 class="pd-title">{{ project.title_sv }}</h1>
+        <p class="pd-description" *ngIf="project.description_sv">{{ project.description_sv }}</p>
+      </div>
+
+      <div class="pd-hero-right" *ngIf="project.price">
+        <div class="pd-price-card">
+          <span class="pd-price-label">Projektvärde</span>
+          <span class="pd-price-value">{{ project.price | number }} SEK</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content grid -->
+    <div class="pd-grid">
+
+      <!-- Client info -->
+      <div class="pd-card" *ngIf="project.client_name || project.contact_person || project.client_email || project.client_phone">
+        <div class="pd-card-header">
+          <span class="pd-card-icon">👥</span>
+          <h2>Kundinformation</h2>
+          <span *ngIf="project.client_type" class="pd-client-type-badge">{{ getClientTypeLabel(project.client_type) }}</span>
+        </div>
+        <div class="pd-info-list">
+          <div class="pd-info-row" *ngIf="project.client_name">
+            <span class="pd-info-label">{{ t('projects.client') }}</span>
+            <span class="pd-info-value">{{ project.client_name }}</span>
+          </div>
+          <div class="pd-info-row" *ngIf="project.contact_person">
+            <span class="pd-info-label">{{ t('projects.contact') }}</span>
+            <span class="pd-info-value">{{ project.contact_person }}</span>
+          </div>
+          <div class="pd-info-row" *ngIf="project.client_email">
+            <span class="pd-info-label">{{ t('projects.email') }}</span>
+            <a class="pd-info-link" [href]="'mailto:' + project.client_email">{{ project.client_email }}</a>
+          </div>
+          <div class="pd-info-row" *ngIf="project.client_phone">
+            <span class="pd-info-label">{{ t('projects.phone') }}</span>
+            <a class="pd-info-link" [href]="'tel:' + project.client_phone">{{ project.client_phone }}</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="pd-card" *ngIf="project.start_date || project.deadline">
+        <div class="pd-card-header">
+          <span class="pd-card-icon">📅</span>
+          <h2>Tidslinje</h2>
+        </div>
+        <div class="pd-timeline">
+          <div class="pd-timeline-item" *ngIf="project.start_date">
+            <div class="pd-timeline-dot pd-dot--start"></div>
+            <div class="pd-timeline-content">
+              <span class="pd-info-label">{{ t('projects.startDate') }}</span>
+              <span class="pd-timeline-date">{{ project.start_date | date:'d MMMM y' }}</span>
+            </div>
+          </div>
+          <div class="pd-timeline-line" *ngIf="project.start_date && project.deadline"></div>
+          <div class="pd-timeline-item" *ngIf="project.deadline">
+            <div class="pd-timeline-dot pd-dot--deadline"></div>
+            <div class="pd-timeline-content">
+              <span class="pd-info-label">{{ t('projects.deadline') }}</span>
+              <span class="pd-timeline-date">{{ project.deadline | date:'d MMMM y' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Technologies -->
+      <div class="pd-card pd-card--wide" *ngIf="project.technologies?.length">
+        <div class="pd-card-header">
+          <span class="pd-card-icon">⚙️</span>
+          <h2>{{ t('projects.technologies') }}</h2>
+          <span class="pd-tech-count">{{ project.technologies!.length }} teknologier</span>
+        </div>
+        <div class="pd-tech-grid">
+          <span class="pd-tech-chip" *ngFor="let tech of project.technologies">
+            {{ tech }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Hosting -->
+      <div class="pd-card" *ngIf="project.has_hosting">
+        <div class="pd-card-header">
+          <span class="pd-card-icon">🌐</span>
+          <h2>Hosting & Drift</h2>
+        </div>
+        <div class="pd-info-list">
+          <div class="pd-info-row" *ngIf="project.domain">
+            <span class="pd-info-label">Domän</span>
+            <span class="pd-info-value pd-domain">{{ project.domain }}</span>
+          </div>
+          <div class="pd-info-row">
+            <span class="pd-info-label">Betalningsstatus</span>
+            <span class="pd-info-value">
+              <span *ngIf="project.is_paid" class="pd-tag-paid">✓ Betald</span>
+              <span *ngIf="!project.is_paid" class="pd-tag-unpaid">⏳ Ej betald</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Internal comment (admin only) -->
+      <div class="pd-card pd-card--internal pd-card--wide"
+           *ngIf="authService.isAdmin() && project.internal_comment">
+        <div class="pd-card-header">
+          <span class="pd-card-icon">🔒</span>
+          <h2>{{ t('projects.internalComment') }}</h2>
+          <span class="pd-internal-badge">Intern</span>
+        </div>
+        <p class="pd-internal-text">{{ project.internal_comment }}</p>
+      </div>
+
+    </div>
+
+    <!-- Meta footer -->
+    <div class="pd-meta" *ngIf="project.created_at">
+      <span>Skapad {{ project.created_at | date:'d MMM y, HH:mm' }}</span>
+    </div>
+
+  </ng-container>
+</div>

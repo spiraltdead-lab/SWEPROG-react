@@ -1,0 +1,162 @@
+<header class="site-header" [class.scrolled]="isScrolled">
+  <div class="header-inner">
+
+    <!-- Logo -->
+    <a class="logo" (click)="navigateToHome($event)">
+      <span class="logo-text">SWEPROG</span>
+      <span class="logo-dot"></span>
+    </a>
+
+    <!-- Desktop nav -->
+    <nav class="desktop-nav">
+      <a (click)="navigateToHome($event)" [class.active]="router.url === '/'">
+        {{ translation.translate('menu.home') }}
+      </a>
+      <a routerLink="/offers" routerLinkActive="active" (click)="closeMenus()">
+        {{ translation.translate('menu.offers') }}
+      </a>
+      <a *ngIf="isLoggedIn" routerLink="/projects" routerLinkActive="active" (click)="closeMenus()">
+        {{ translation.translate('menu.projects') }}
+      </a>
+      <a *ngIf="isLoggedIn" (click)="navigateToDashboard($event)" [class.active]="router.url.includes('/dashboard')">
+        {{ translation.translate('menu.dashboard') }}
+      </a>
+    </nav>
+
+    <!-- Desktop right -->
+    <div class="header-actions">
+
+      <!-- Language -->
+      <div class="lang-picker" [class.open]="languageMenuOpen">
+        <button class="lang-btn" (click)="toggleLanguageMenu()">
+          <span>{{ getCurrentLanguageFlag() }}</span>
+          <span class="lang-code">{{ currentLanguage.toUpperCase() }}</span>
+          <svg width="10" height="10" viewBox="0 0 10 10"><path d="M1 3l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+        </button>
+        <div class="lang-dropdown" *ngIf="languageMenuOpen">
+          <button *ngFor="let lang of languages"
+                  [class.active]="lang.code === currentLanguage"
+                  (click)="setLanguage(lang.code)">
+            <span>{{ lang.flag }}</span> {{ lang.name }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Not logged in -->
+      <a *ngIf="!isLoggedIn" routerLink="/login" class="btn-login">
+        {{ translation.translate('auth.login') || 'Logga in' }}
+      </a>
+
+      <!-- Logged in: user chip -->
+      <div *ngIf="isLoggedIn" class="user-chip" [class.open]="userMenuOpen">
+        <button class="user-chip-btn" (click)="toggleUserMenu()">
+          <span class="avatar">{{ userInitials }}</span>
+          <span class="uname">{{ userName }}</span>
+          <span class="role-tag" *ngIf="isAdmin">Admin</span>
+          <svg width="10" height="10" viewBox="0 0 10 10"><path d="M1 3l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+        </button>
+        <div class="user-dropdown" *ngIf="userMenuOpen">
+          <a (click)="navigateToAdminDashboard($event)" class="dd-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+            {{ translation.translate('menu.dashboard') }}
+          </a>
+          <a *ngIf="isAdmin" (click)="navigateToUserManagement($event)" class="dd-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            {{ translation.translate('menu.userManagement') }}
+          </a>
+          <a (click)="navigateToProfile($event)" class="dd-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            {{ translation.translate('menu.profile') }}
+          </a>
+          <div class="dd-divider"></div>
+          <button class="dd-item dd-logout" (click)="logout()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            {{ translation.translate('auth.logout') }}
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Hamburger -->
+    <button class="hamburger" (click)="toggleMobileMenu()" [class.open]="mobileMenuOpen" aria-label="Meny">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+  </div>
+</header>
+
+<!-- ── MOBILE DRAWER ─────────────────────────────── -->
+<div class="drawer-backdrop" [class.visible]="mobileMenuOpen" (click)="closeMenus()"></div>
+
+<nav class="drawer" [class.open]="mobileMenuOpen">
+
+  <!-- Drawer header -->
+  <div class="drawer-top">
+    <span class="drawer-logo">SWEPROG</span>
+    <button class="drawer-close" (click)="closeMenus()" aria-label="Stäng">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+
+  <!-- Nav links -->
+  <div class="drawer-links">
+    <a class="drawer-link" (click)="navigateToHome($event); closeMenus()">
+      {{ translation.translate('menu.home') }}
+    </a>
+    <a class="drawer-link" routerLink="/offers" (click)="closeMenus()">
+      {{ translation.translate('menu.offers') }}
+    </a>
+    <ng-container *ngIf="isLoggedIn">
+      <a class="drawer-link" routerLink="/projects" (click)="closeMenus()">
+        {{ translation.translate('menu.projects') }}
+      </a>
+      <a class="drawer-link" (click)="navigateToDashboard($event); closeMenus()">
+        {{ translation.translate('menu.dashboard') }}
+      </a>
+      <a *ngIf="isAdmin" class="drawer-link" (click)="navigateToUserManagement($event); closeMenus()">
+        {{ translation.translate('menu.userManagement') }}
+      </a>
+      <a class="drawer-link" (click)="navigateToProfile($event); closeMenus()">
+        {{ translation.translate('menu.profile') }}
+      </a>
+    </ng-container>
+  </div>
+
+  <!-- User section -->
+  <div class="drawer-user" *ngIf="isLoggedIn">
+    <div class="drawer-user-card">
+      <span class="drawer-avatar">{{ userInitials }}</span>
+      <div class="drawer-user-info">
+        <span class="drawer-user-name">{{ userName }}</span>
+        <span class="drawer-user-email">{{ userEmail }}</span>
+      </div>
+      <span class="drawer-role" *ngIf="isAdmin">Admin</span>
+    </div>
+    <button class="drawer-logout" (click)="logout()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      {{ translation.translate('auth.logout') }}
+    </button>
+  </div>
+
+  <div class="drawer-login" *ngIf="!isLoggedIn">
+    <a routerLink="/login" class="drawer-login-btn" (click)="closeMenus()">
+      {{ translation.translate('auth.login') || 'Logga in' }}
+    </a>
+  </div>
+
+  <!-- Language -->
+  <div class="drawer-lang">
+    <p class="drawer-lang-label">{{ translation.translate('menu.language') || 'Språk' }}</p>
+    <div class="drawer-lang-options">
+      <button *ngFor="let lang of languages"
+              [class.active]="lang.code === currentLanguage"
+              (click)="setLanguage(lang.code); closeMenus()">
+        {{ lang.flag }} {{ lang.name }}
+      </button>
+    </div>
+  </div>
+
+</nav>

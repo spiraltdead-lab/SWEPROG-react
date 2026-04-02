@@ -1,0 +1,106 @@
+<div class="projects-page">
+<div class="projects-container">
+  <div class="projects-header">
+    <h1>{{ t('projects.title') }}</h1>
+    <button *ngIf="authService.isAdmin()" class="btn-primary" routerLink="/projects/new">
+      + {{ t('projects.createNew') }}
+    </button>
+  </div>
+
+  <!-- Filter och sök -->
+  <div class="filters">
+    <div class="filter-group">
+      <label>{{ t('projects.filters.status') }}:</label>
+      <select [(ngModel)]="selectedStatus" (change)="onFilterChange()">
+        <option value="alla">{{ t('projects.filters.all') }}</option>
+        <option value="new">{{ t('projects.filters.new') }}</option>
+        <option value="ongoing">{{ t('projects.filters.ongoing') }}</option>
+        <option value="completed">{{ t('projects.filters.completed') }}</option>
+      </select>
+    </div>
+
+    <div class="search-group">
+      <input 
+        type="text" 
+        [(ngModel)]="searchTerm" 
+        (input)="onSearch()"
+        [placeholder]="t('projects.search')"
+        class="search-input">
+    </div>
+  </div>
+
+  <!-- Laddningsindikator -->
+  <div class="loading" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>{{ t('common.loading') }}</p>
+  </div>
+
+  <!-- Felmeddelande -->
+  <div class="error-message" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Projektlista -->
+  <div class="projects-grid" *ngIf="!loading && !errorMessage">
+    <div class="project-card" *ngFor="let project of filteredProjects">
+      <div class="project-header">
+        <h3>{{ project.title_sv }}</h3>
+        <span class="status-badge" [class]="getStatusClass(project.status)">
+          {{ getStatusText(project.status) }}
+        </span>
+        <!-- Demo-badge för gäster eller för att visa demo-projekt -->
+        <span *ngIf="project.is_demo" class="demo-badge">
+          DEMO
+        </span>
+      </div>
+
+      <div class="project-body">
+        <p class="client" *ngIf="project.client_name">
+          <strong>{{ t('projects.client') }}:</strong> {{ project.client_name }}
+        </p>
+        <p class="contact" *ngIf="project.contact_person">
+          <strong>{{ t('projects.contact') }}:</strong> {{ project.contact_person }}
+        </p>
+        <p class="price" *ngIf="project.price">
+          <strong>{{ t('projects.budget') }}:</strong> {{ project.price | currency:'SEK' }}
+        </p>
+        <p class="dates" *ngIf="project.start_date">
+          <strong>{{ t('projects.startDate') }}:</strong> {{ project.start_date | date }}
+        </p>
+        <p class="dates" *ngIf="project.deadline">
+          <strong>{{ t('projects.endDate') }}:</strong> {{ project.deadline | date }}
+        </p>
+      </div>
+
+      <div class="project-footer">
+        <div class="tech-tags" *ngIf="project.technologies?.length">
+          <span class="tech-tag" *ngFor="let tech of project.technologies">
+            {{ tech }}
+          </span>
+        </div>
+        
+        <!-- Endast admin kan redigera/ta bort -->
+        <div class="project-actions" *ngIf="authService.isAdmin()">
+          <button class="btn-icon" [routerLink]="['/projects', project.id]" title="{{ t('projects.view') }}">
+            👁️
+          </button>
+          <button class="btn-icon" [routerLink]="['/projects', project.id, 'edit']" title="{{ t('projects.edit') }}">
+            ✏️
+          </button>
+          <button class="btn-icon delete" (click)="deleteProject(project.id!, $event)" title="{{ t('projects.delete') }}">
+            🗑️
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tomt state -->
+    <div class="empty-state" *ngIf="filteredProjects.length === 0">
+      <p>{{ t('projects.noResults') }}</p>
+      <button *ngIf="authService.isAdmin()" routerLink="/projects/new" class="btn-primary">
+        {{ t('projects.createNew') }}
+      </button>
+    </div>
+  </div>
+</div>
+</div>

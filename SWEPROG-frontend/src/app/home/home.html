@@ -1,0 +1,211 @@
+<div class="elegant-home" [class.rtl]="currentLanguage === 'ar'">
+  <!-- 3D Canvas Background -->
+  <canvas #canvas class="canvas-3d"></canvas>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="floating-elements">
+        <div class="floating-element" *ngFor="let el of floatingElements"></div>
+      </div>
+      <div class="hero-content">
+        <h1 class="hero-title">
+          {{ t('hero.title') }}<br>
+          <span class="highlight">{{ t('hero.highlight') }}</span><br>
+          {{ t('hero.titleEnd') }}
+        </h1>
+        <p class="hero-description">{{ t('hero.subtitle') }}</p>
+        
+        <div class="hero-actions">
+          <a (click)="scrollToContact()" class="btn btn-primary" style="cursor:pointer">{{ t('hero.cta') }}</a>
+          <a *ngIf="isLoggedIn" routerLink="/projects" class="btn btn-outline">{{ t('hero.secondaryCta') }}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Offers Section -->
+  <section class="offers-section">
+    <div class="container">
+      <h2>{{ t('offers.title') }}</h2>
+      <p class="section-subtitle">{{ t('offers.subtitle') }}</p>
+
+      <div class="offers-grid">
+        <div class="offer-card" *ngFor="let i of offerIndices">
+          <div class="offer-badge">{{ getOfferDiscount(i) }}</div>
+          <h3>{{ getOfferTitle(i) }}</h3>
+          <p>{{ getOfferDescription(i) }}</p>
+          <div class="offer-valid">⏳ {{ getOfferValid(i) }}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section class="services-section">
+    <div class="container">
+      <h2>{{ t('services.title') }}</h2>
+      <p class="section-subtitle">{{ t('services.subtitle') }}</p>
+
+      <div class="services-grid">
+        <div class="service-card" *ngFor="let i of serviceIndices">
+          <h3>{{ getServiceTitle(i) }}</h3>
+          <p>{{ getServiceDescription(i) }}</p>
+          <div class="service-features">
+            <span *ngFor="let feature of getServiceFeatures(i)" class="feature-tag">
+              {{ feature }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Section -->
+  <section class="why-section">
+    <div class="container">
+      <h2>{{ t('why.title') }}</h2>
+      <p class="section-subtitle">{{ t('why.subtitle') }}</p>
+
+      <div class="why-grid">
+        <div class="why-card" *ngFor="let i of reasonIndices">
+          <div class="why-icon">{{ getReasonIcon(i) }}</div>
+          <h3>{{ getReasonTitle(i) }}</h3>
+          <p>{{ getReasonDescription(i) }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section class="projects-section">
+    <div class="container">
+      <h2>{{ t('projects.title') }}</h2>
+      <p class="section-subtitle">{{ t('projects.subtitle') }}</p>
+
+      <div class="projects-grid">
+        <div class="project-card" *ngFor="let i of [0,1,2]">
+          <h3>{{ getProjectTitle(i) }}</h3>
+          <p>{{ getProjectDescription(i) }}</p>
+          <div class="project-tech">
+            <span *ngFor="let j of [0,1,2]">{{ getProjectTech(i, j) }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact-section" id="contact-section">
+    <div class="container">
+      <div class="contact-header">
+        <h2>{{ getContactTitle() }}</h2>
+        <p class="contact-subtitle">{{ getContactSubtitle() }}</p>
+      </div>
+
+      <div class="contact-grid">
+
+        <!-- Info panel -->
+        <div class="contact-info">
+          <div class="contact-info-card">
+            <div class="contact-info-item">
+              <div class="contact-info-icon">✉️</div>
+              <div>
+                <span class="contact-info-label">{{ t('contact.emailLabel') }}</span>
+                <a href="mailto:hello@sweprog.se" class="contact-info-value">hello@sweprog.se</a>
+              </div>
+            </div>
+            <div class="contact-info-item">
+              <div class="contact-info-icon">📞</div>
+              <div>
+                <span class="contact-info-label">{{ t('contact.phoneLabel') }}</span>
+                <a href="tel:+46715083800" class="contact-info-value">+46 715 08 38</a>
+              </div>
+            </div>
+            <div class="contact-info-item">
+              <div class="contact-info-icon">⏰</div>
+              <div>
+                <span class="contact-info-label">{{ t('contact.responseTimeLabel') }}</span>
+                <span class="contact-info-value">{{ t('contact.responseTimeValue') }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form -->
+        <div class="contact-form">
+
+          <!-- Success state -->
+          <div class="contact-success" *ngIf="contactSent">
+            <div class="success-icon">✓</div>
+            <h3>{{ t('contact.messageSent') }}</h3>
+            <p>{{ t('contact.messageSentDesc') }}</p>
+            <button class="btn btn-outline-light" (click)="contactSent = false">{{ t('contact.sendAnother') }}</button>
+          </div>
+
+          <!-- Form fields -->
+          <form (ngSubmit)="submitContact()" *ngIf="!contactSent" class="contact-form-inner">
+            <div class="form-row">
+              <div class="form-group">
+                <label>{{ getContactName() }}</label>
+                <input type="text" [(ngModel)]="contactForm.name" name="name"
+                       class="form-input" [placeholder]="getContactName()" required>
+              </div>
+              <div class="form-group">
+                <label>{{ getContactEmail() }}</label>
+                <input type="email" [(ngModel)]="contactForm.email" name="email"
+                       class="form-input" [placeholder]="getContactEmail()" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>{{ t('contact.offerLabel') }}</label>
+              <select [(ngModel)]="contactForm.offer" name="offer" class="form-input form-select">
+                <option value="">{{ t('contact.offerNone') }}</option>
+                <option value="1">{{ t('offers.items.webbstart.title') }}</option>
+                <option value="2">{{ t('offers.items.business.title') }}</option>
+                <option value="3">{{ t('offers.items.ecommerce.title') }}</option>
+                <option value="4">{{ t('offers.items.enterprise.title') }}</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>{{ getContactMessage() }}</label>
+              <textarea [(ngModel)]="contactForm.message" name="message"
+                        class="form-input" [placeholder]="getContactMessage()"
+                        rows="4" required></textarea>
+            </div>
+
+            <div class="form-error" *ngIf="contactError">
+              {{ t('contact.error') }}
+            </div>
+
+            <div class="form-footer">
+              <p class="form-note">{{ getContactNote() }}</p>
+              <button type="submit" class="btn btn-primary btn-send" [disabled]="contactSending">
+                <span *ngIf="!contactSending">{{ getContactSubmit() }} →</span>
+                <span *ngIf="contactSending">{{ t('contact.sending') }}</span>
+              </button>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="logo">SWEPROG</div>
+          <p>{{ t('footer.tagline') }}</p>
+        </div>
+        <div class="footer-copyright">
+          © 2026 SWEPROG. {{ t('footer.rights') }}
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>

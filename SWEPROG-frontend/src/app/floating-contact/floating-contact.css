@@ -1,0 +1,171 @@
+
+    .floating-container {
+      position: fixed;
+      right: 2rem;
+      bottom: 2rem;
+      z-index: 1000;
+      transform: translateY(0);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .floating-container.visible {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: all;
+    }
+
+    .floating-btn {
+      position: relative;
+      padding: 1rem 2rem;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border: none;
+      border-radius: 50px;
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      overflow: hidden;
+      box-shadow: 0 10px 30px -5px rgba(102, 126, 234, 0.5);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(5px);
+    }
+
+    .floating-btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 20px 40px -5px rgba(102, 126, 234, 0.7);
+    }
+
+    .floating-btn:active {
+      transform: translateY(0) scale(0.95);
+    }
+
+    .btn-content {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      z-index: 2;
+    }
+
+    .btn-icon {
+      font-size: 1.3rem;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
+    }
+
+    .btn-text {
+      letter-spacing: 0.5px;
+    }
+
+    .btn-glow {
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .floating-btn:hover .btn-glow {
+      opacity: 1;
+      animation: rotate 4s linear infinite;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Partikeleffekt */
+    .btn-particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .btn-particles::before,
+    .btn-particles::after {
+      content: '';
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      background: white;
+      border-radius: 50%;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .floating-btn:hover .btn-particles::before {
+      animation: particle1 1s ease-out infinite;
+    }
+
+    .floating-btn:hover .btn-particles::after {
+      animation: particle2 1s ease-out infinite;
+    }
+
+    @keyframes particle1 {
+      0% {
+        opacity: 0;
+        transform: translate(0, 0);
+      }
+      50% {
+        opacity: 1;
+        transform: translate(-20px, -20px);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-40px, -40px);
+      }
+    }
+
+    @keyframes particle2 {
+      0% {
+        opacity: 0;
+        transform: translate(0, 0);
+      }
+      50% {
+        opacity: 1;
+        transform: translate(20px, -15px);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(40px, -30px);
+      }
+    }
+
+    /* Scroll-progress */
+    .scroll-progress {
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #ffd700, #ff8c00);
+      border-radius: 3px;
+      transition: width 0.1s linear;
+    }
+
+    @media (max-width: 768px) {
+      .floating-container {
+        right: 1rem;
+        bottom: 1rem;
+      }
+
+      .floating-btn {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+      }
+    }

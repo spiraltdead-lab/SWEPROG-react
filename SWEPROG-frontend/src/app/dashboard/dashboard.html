@@ -1,0 +1,193 @@
+<div class="dashboard">
+  <!-- Header -->
+  <div class="dashboard-header">
+    <div class="header-left">
+      <h1>{{ t('dashboard.title') }}</h1>
+      <p class="date">{{ currentDate | date:'fullDate' }}</p>
+    </div>
+    <div class="header-right">
+      <div class="user-info">
+        <span class="welcome">{{ t('dashboard.welcome') }},</span>
+        <span class="user-name">{{ (authService.currentUser$ | async)?.name }}</span>
+        <span *ngIf="authService.isGuest()" class="guest-badge">
+          ({{ t('dashboard.guestWelcome') || 'Gäst' }})
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Guest info banner (visas bara för gäster) -->
+  <div class="guest-banner" *ngIf="authService.isGuest()">
+    <div class="banner-icon">👤</div>
+    <div class="banner-text">
+      <strong>{{ t('dashboard.guestMode') || 'Demoläge' }}:</strong>
+      {{ t('dashboard.guestInfo') || 'Du ser dummy-data. Skapa ett riktigt konto för att se verkliga projekt.' }}
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-container" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>{{ t('common.loading') }}</p>
+  </div>
+
+  <!-- Dashboard Content -->
+  <div class="dashboard-content" *ngIf="!loading && stats">
+    <!-- KPI Cards -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-icon" [style.background]="colors.primary + '20'">
+          <span class="material-symbols-outlined" [style.color]="colors.primary">folder</span>
+        </div>
+        <div class="kpi-info">
+          <span class="kpi-label">{{ t('dashboard.stats.totalProjects') }}</span>
+          <span class="kpi-value">{{ stats.totalProjects }}</span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon" [style.background]="colors.warning + '20'">
+          <span class="material-symbols-outlined" [style.color]="colors.warning">schedule</span>
+        </div>
+        <div class="kpi-info">
+          <span class="kpi-label">{{ t('dashboard.stats.activeProjects') }}</span>
+          <span class="kpi-value">{{ stats.activeProjects }}</span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon" [style.background]="colors.success + '20'">
+          <span class="material-symbols-outlined" [style.color]="colors.success">check_circle</span>
+        </div>
+        <div class="kpi-info">
+          <span class="kpi-label">{{ t('dashboard.stats.completedProjects') }}</span>
+          <span class="kpi-value">{{ stats.completedProjects }}</span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon" [style.background]="colors.purple + '20'">
+          <span class="material-symbols-outlined" [style.color]="colors.purple">payments</span>
+        </div>
+        <div class="kpi-info">
+          <span class="kpi-label">{{ t('dashboard.stats.totalRevenue') }}</span>
+          <span class="kpi-value">{{ formatCurrency(stats.totalRevenue) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Grid -->
+    <div class="charts-grid">
+      <!-- Status Diagram -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3>{{ t('dashboard.charts.projectStatus') }}</h3>
+          <span class="chart-subtitle">{{ t('dashboard.charts.projectDistribution') }}</span>
+        </div>
+        <div class="chart-container">
+          <canvas #statusChart></canvas>
+        </div>
+        <div class="chart-footer">
+          <div class="legend-item" *ngFor="let item of stats.projectsByStatus">
+            <span class="legend-color" [style.background]="item.color"></span>
+            <span class="legend-label">{{ item.status }}</span>
+            <span class="legend-value">{{ item.count }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trend Diagram -->
+      <div class="chart-card large">
+        <div class="chart-header">
+          <h3>{{ t('dashboard.charts.projectTrend') }}</h3>
+          <span class="chart-subtitle">{{ t('dashboard.charts.last6Months') }}</span>
+        </div>
+        <div class="chart-container">
+          <canvas #trendChart></canvas>
+        </div>
+      </div>
+
+      <!-- Toppteknologier -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3>{{ t('dashboard.charts.topTechnologies') }}</h3>
+          <span class="chart-subtitle">{{ t('dashboard.charts.mostUsedTech') }}</span>
+        </div>
+        <div class="chart-container">
+          <canvas #techChart></canvas>
+        </div>
+        <div class="chart-footer">
+          <div class="tech-list" *ngIf="stats.topTechnologies.length > 0">
+            <div class="tech-item" *ngFor="let tech of stats.topTechnologies">
+              <div class="tech-info">
+                <span class="tech-name">{{ tech.name }}</span>
+                <span class="tech-count">{{ tech.count }} {{ t('projects.technologies') }}</span>
+              </div>
+              <div class="tech-progress">
+                <div class="progress-bar" 
+                    [style.width]="tech.percentage + '%'"
+                    [style.background]="'linear-gradient(90deg, ' + colors.primary + ', ' + colors.purple + ')'">
+                </div>
+                <span class="progress-percent">{{ tech.percentage }}%</span>
+              </div>
+            </div>
+          </div>
+          <div class="empty-tech" *ngIf="stats.topTechnologies.length === 0">
+            <p>{{ t('dashboard.charts.noTechnologies') }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Snabbnavigation och aktiviteter -->
+    <div class="bottom-grid">
+      <!-- Snabbnavigation -->
+      <div class="quick-actions-card">
+        <h3>{{ t('dashboard.quickActions') }}</h3>
+        <div class="quick-actions">
+          <a routerLink="/projects" class="action-item">
+            <div class="action-icon">📊</div>
+            <div class="action-content">
+              <span class="action-title">{{ t('dashboard.viewAllProjects') }}</span>
+              <span class="action-desc">{{ stats.totalProjects }} {{ t('projects.title').toLowerCase() }}</span>
+            </div>
+            <span class="action-arrow">→</span>
+          </a>
+          <a *ngIf="authService.isAdmin()" routerLink="/projects/new" class="action-item">
+            <div class="action-icon">➕</div>
+            <div class="action-content">
+              <span class="action-title">{{ t('dashboard.createProject') }}</span>
+              <span class="action-desc">{{ t('dashboard.createProjectDesc') }}</span>
+            </div>
+            <span class="action-arrow">→</span>
+          </a>
+          <a routerLink="/projects" [queryParams]="{status: 'ongoing'}" class="action-item">
+            <div class="action-icon">⚡</div>
+            <div class="action-content">
+              <span class="action-title">{{ t('projects.filters.ongoing') }}</span>
+              <span class="action-desc">{{ stats.activeProjects }} {{ t('projects.filters.ongoing').toLowerCase() }}</span>
+            </div>
+            <span class="action-arrow">→</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Senaste aktiviteter -->
+      <div class="activities-card">
+        <h3>{{ t('dashboard.recentActivity') }}</h3>
+        <div class="activity-list">
+          <div class="activity-item" *ngFor="let activity of stats.recentActivities">
+            <div class="activity-icon">{{ activity.icon }}</div>
+            <div class="activity-content">
+              <p class="activity-description">{{ activity.description }}</p>
+              <div class="activity-meta">
+                <span class="activity-user">{{ activity.user }}</span>
+                <span class="activity-time">{{ getTimeAgo(activity.timestamp) }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

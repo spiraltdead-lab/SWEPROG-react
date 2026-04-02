@@ -1,0 +1,106 @@
+<div class="profile-container">
+  <div class="profile-header">
+    <h1>{{ t('profile.title') }}</h1>
+    <button *ngIf="!editMode" class="btn btn-outline" (click)="toggleEditMode()">
+      {{ t('profile.edit') }}
+    </button>
+  </div>
+
+  <div class="profile-card" *ngIf="user">
+    <!-- Profile Info View Mode -->
+    <div class="profile-info" *ngIf="!editMode">
+      <div class="info-row">
+        <span class="info-label">{{ t('profile.fields.name') }}:</span>
+        <span class="info-value">{{ user.name }}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">{{ t('profile.fields.email') }}:</span>
+        <span class="info-value">{{ user.email }}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">{{ t('profile.fields.role') }}:</span>
+        <span class="info-value role-badge">{{ user.role }}</span>
+      </div>
+      <div class="info-row" *ngIf="user.phone">
+        <span class="info-label">{{ t('profile.fields.phone') }}:</span>
+        <span class="info-value">{{ user.phone }}</span>
+      </div>
+      <div class="info-row" *ngIf="user.company">
+        <span class="info-label">{{ t('profile.fields.company') }}:</span>
+        <span class="info-value">{{ user.company }}</span>
+      </div>
+    </div>
+
+    <!-- Profile Edit Mode -->
+    <form *ngIf="editMode" (ngSubmit)="saveProfile()" class="profile-form">
+      <div class="form-group">
+        <label>{{ t('profile.fields.name') }}</label>
+        <input type="text" [(ngModel)]="profileForm.name" name="name" class="form-input">
+      </div>
+
+      <div class="form-group">
+        <label>{{ t('profile.fields.email') }}</label>
+        <input type="email" [(ngModel)]="profileForm.email" name="email" class="form-input" readonly>
+      </div>
+
+      <div class="form-group">
+        <label>{{ t('profile.fields.phone') }}</label>
+        <input type="tel" [(ngModel)]="profileForm.phone" name="phone" class="form-input">
+      </div>
+
+      <div class="form-group">
+        <label>{{ t('profile.fields.company') }}</label>
+        <input type="text" [(ngModel)]="profileForm.company" name="company" class="form-input">
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" (click)="toggleEditMode()">{{ t('common.cancel') }}</button>
+        <button type="submit" class="btn btn-primary" [disabled]="isSaving">
+          {{ isSaving ? (t('common.saving') || 'Sparar…') : t('common.save') }}
+        </button>
+      </div>
+
+      <div class="save-success" *ngIf="saveSuccess">✓ {{ t('profile.saved') || 'Profilen sparades' }}</div>
+      <div class="save-error"   *ngIf="saveError">{{ saveError }}</div>
+    </form>
+  </div>
+
+  <!-- Change password card -->
+  <div class="profile-card pw-card" *ngIf="user">
+    <div class="pw-header" (click)="togglePwSection()">
+      <span>🔒 {{ t('profile.changePassword') || 'Ändra lösenord' }}</span>
+      <span class="pw-chevron" [class.open]="showPwSection">▾</span>
+    </div>
+
+    <div class="pw-body" *ngIf="showPwSection">
+      <div class="form-group">
+        <label>{{ t('profile.currentPassword') || 'Nuvarande lösenord' }}</label>
+        <input type="password" [(ngModel)]="pwForm.current" name="pwCurrent"
+               class="form-input" autocomplete="current-password">
+      </div>
+      <div class="form-group">
+        <label>{{ t('profile.newPassword') || 'Nytt lösenord' }}</label>
+        <input type="password" [(ngModel)]="pwForm.newPw" name="pwNew"
+               class="form-input" autocomplete="new-password">
+      </div>
+      <div class="form-group">
+        <label>{{ t('auth.confirmPassword') || 'Bekräfta nytt lösenord' }}</label>
+        <input type="password" [(ngModel)]="pwForm.confirm" name="pwConfirm"
+               class="form-input" [class.mismatch]="pwForm.confirm && pwForm.newPw !== pwForm.confirm"
+               autocomplete="new-password">
+        <span class="hint-error" *ngIf="pwForm.confirm && pwForm.newPw !== pwForm.confirm">
+          {{ t('auth.errors.passwordMismatch') || 'Lösenorden matchar inte' }}
+        </span>
+      </div>
+
+      <div class="save-error"   *ngIf="pwError">{{ pwError }}</div>
+      <div class="save-success" *ngIf="pwSuccess">✓ {{ t('profile.passwordChanged') || 'Lösenordet har uppdaterats' }}</div>
+
+      <div class="form-actions">
+        <button class="btn btn-primary" (click)="changePassword()" [disabled]="pwLoading">
+          {{ pwLoading ? (t('common.saving') || 'Sparar…') : (t('profile.changePassword') || 'Ändra lösenord') }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

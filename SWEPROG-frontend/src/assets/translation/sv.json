@@ -1,0 +1,572 @@
+{
+  "menu": {
+    "home": "Hem",
+    "services": "Tjänster",
+    "projects": "Projekt",
+    "contact": "Kontakt",
+    "offers": "Erbjudanden",
+    "language": "Språk",
+    "dashboard": "Dashboard",
+    "profile": "Profil",
+    "admin": "Admin",
+    "userManagement": "Användare",
+    "settings": "Inställningar"
+    },
+  "auth": {
+    "welcome": "Välkommen tillbaka",
+    "loginSubtitle": "Logga in för att fortsätta",
+    "email": "E-post",
+    "emailPlaceholder": "namn@exempel.se",
+    "password": "Lösenord",
+    "passwordPlaceholder": "••••••••",
+    "login": "Logga in",
+    "loggingIn": "Loggar in...",
+    "logout": "Logga ut",
+    "forgotPassword": "Glömt lösenord?",
+    "forgotDesc": "Ange din e-postadress så skickar vi en återställningslänk.",
+    "sendResetLink": "Skicka återställningslänk",
+    "forgotSent": "Om e-postadressen finns i systemet får du ett e-postmeddelande inom kort.",
+    "forgotSpamNote": "Hittar du inte mejlet? Kontrollera skräppost- eller junk-mappen.",
+    "close": "Stäng",
+    "reset": {
+      "validating": "Verifierar länk…",
+      "invalidTitle": "Länken är ogiltig",
+      "invalidDesc": "Länken har gått ut eller använts redan. Begär en ny återställningslänk.",
+      "backToLogin": "Tillbaka till inloggning",
+      "title": "Välj nytt lösenord",
+      "desc": "Lösenordet måste vara minst 8 tecken.",
+      "newPassword": "Nytt lösenord",
+      "submit": "Spara nytt lösenord",
+      "successTitle": "Lösenordet är återställt!",
+      "successDesc": "Du kan nu logga in med ditt nya lösenord.",
+      "goLogin": "Logga in"
+    },
+    "register": "Skapa gästkonto",
+    "guestAccount": "Gästkonto - se dummy-data",
+    "name": "Namn",
+    "namePlaceholder": "Anna Andersson",
+    "confirmPassword": "Bekräfta lösenord",
+    "passwordHint": "Minst 8 tecken",
+    "acceptTerms": "Jag godkänner",
+    "terms": "användarvillkoren",
+    "and": "och",
+    "privacy": "integritetspolicyn",
+    "guestInfo": "Som gäst får du tillgång till demo-projekt och kan utforska våra tjänster. Inga betalningsuppgifter krävs.",
+    "registerSuccess": "Konto skapat! Välkommen som gäst.",
+    "registering": "Skapar konto...",
+    "errors": {
+      "required": "Fyll i både e-post och lösenord",
+      "invalidEmail": "Ogiltig e-postadress",
+      "invalidCredentials": "Felaktig e-post eller lösenord",
+      "serverError": "Kunde inte nå servern",
+      "unknown": "Inloggningen misslyckades",
+      "registerRequired": "Fyll i alla fält",
+      "passwordLength": "Lösenordet måste vara minst 8 tecken",
+      "passwordMismatch": "Lösenorden matchar inte",
+      "termsRequired": "Du måste godkänna villkoren",
+      "emailExists": "E-postadressen finns redan",
+      "registerFailed": "Registreringen misslyckades"
+    }
+  },
+  "hero": {
+    "badge": "🇸🇪 Svensk IT-konsult sedan 2018",
+    "title": "Sveriges mest",
+    "highlight": "tekniskt avancerade",
+    "titleEnd": "IT-konsulter",
+    "subtitle": "Vi bygger framtidens digitala lösningar med svensk precision och global räckvidd",
+    "description": "Vi hjälper er att navigera i den digitala transformationen med skräddarsydda systemlösningar.",
+    "cta": "Boka kostnadsfri konsultation",
+    "secondaryCta": "Utforska våra projekt",
+    "stats": {
+      "projects": "Projekt",
+      "years": "År erfarenhet",
+      "satisfaction": "Nöjdhet"
+    }
+  },
+  "offers": {
+    "title": "Aktuella erbjudanden",
+    "subtitle": "Tidsbegränsade erbjudanden för nya kunder",
+    "hero": {
+      "title": "Flexibla paket för alla behov",
+      "subtitle": "Välj det paket som passar just din verksamhet. Alla priser är exklusive moms."
+    },
+    "priceUnit": {
+      "month": "mån"
+    },
+    "badges": {
+      "popular": "MEST POPULÄR",
+      "enterprise": "FÖR STORA TEAM"
+    },
+    "save": "Spara",
+    "moreInfo": "Mer info",
+    "modal": {
+      "contactForQuote": "Kontakta oss för offert",
+      "select": "Välj detta paket"
+    },
+    "cta": {
+      "select": "Välj",
+      "contact": "Kontakta sälj",
+      "title": "Redo att komma igång?",
+      "subtitle": "Kontakta oss för en kostnadsfri konsultation där vi diskuterar era behov."
+    },
+    "items": {
+      "webbstart": {
+        "title": "Webbstart",
+        "description": "Perfekt för företag som vill komma igång online snabbt och kostnadseffektivt.",
+        "details": "Perfekt för nystartade företag och småföretag som vill etablera en professionell närvaro online. Vi bygger en mobilanpassad hemsida med upp till 5 sidor, kontaktformulär och grundläggande SEO så att ni syns på Google. SSL-certifikat ingår för säker anslutning. Ni får 1 timmes teknisk support per månad och leverans sker normalt inom 2–3 veckor.",
+        "features": {
+          "responsive": "Responsiv design (mobilanpassad)",
+          "pages": "Upp till 5 sidor",
+          "contact": "Kontaktformulär",
+          "seo": "Grundläggande SEO",
+          "support": "1 timmes support/månad",
+          "ssl": "SSL-certifikat ingår"
+        }
+      },
+      "business": {
+        "title": "Business Premium",
+        "description": "Skräddarsydd hanteringssida för era unika verksamhetsbehov.",
+        "details": "Skräddarsydd plattform för medelstora företag med specifika verksamhetsbehov. Vi integrerar era processer i ett sammanhängat system med CRM-anpassning, obegränsat antal sidor, avancerad sökfunktion och bokningssystem med kalender. Inkluderar e-postintegration, Google Analytics och månadsvis prestandarapport. Prioriterad support med svarstid inom 24 timmar.",
+        "features": {
+          "crm": "Skräddarsydd CRM-anpassning",
+          "unlimited": "Obegränsat antal sidor",
+          "search": "Avancerad sökfunktion",
+          "booking": "Bokningssystem/kalender",
+          "email": "E-postintegration",
+          "analytics": "Analysverktyg (Google Analytics)",
+          "support": "Prioriterad support (24h)",
+          "report": "Månadsvis prestandarapport"
+        }
+      },
+      "ecommerce": {
+        "title": "E-handel",
+        "description": "Komplett e-handelslösning för att sälja era produkter online.",
+        "details": "Komplett e-handelsplattform för att sälja produkter och tjänster online. Vi kopplar upp Klarna och Stripe för smidig betalning, bygger in lagerhantering i realtid, orderhistorik och kundkonton. Inkluderar rabattkoder, kampanjhantering, automatisk fakturering med momsberäkning och SEO-optimerade produktsidor. 24/7 teknisk support ingår.",
+        "features": {
+          "products": "Obegränsat antal produkter",
+          "payment": "Betalningsintegration (Klarna, Stripe)",
+          "inventory": "Lagerhantering",
+          "orders": "Orderhistorik & kundkonton",
+          "discounts": "Rabattkoder & kampanjer",
+          "invoicing": "Fakturering & moms",
+          "seo": "SEO-optimerade produktsidor",
+          "support": "24/7 teknisk support"
+        }
+      },
+      "enterprise": {
+        "title": "Enterprise",
+        "description": "Skräddarsydd enterprise-lösning för stora verksamheter med komplexa behov.",
+        "details": "Fullt skräddarsydd enterprise-lösning för stora organisationer med komplexa krav. Vi bygger utifrån era exakta specifikationer med API-integrationer mot befintliga system, Single Sign-On för sömlös autentisering och avancerad behörighetshantering per roll. Inkluderar dedikerad servermiljö, SLA med 99.9% garanterad upptid, personlig projektledare och oändlig konsulttid.",
+        "features": {
+          "custom": "Fullt skräddarsydd utveckling",
+          "api": "API-integrationer",
+          "sso": "Single Sign-On (SSO)",
+          "permissions": "Avancerad behörighetshantering",
+          "dedicated": "Dedikerad servermiljö",
+          "sla": "SLA med 99.9% upptid",
+          "pm": "Personlig projektledare",
+          "support": "Oändlig support & konsulttid"
+        }
+      },
+      "0": { "title": "Webbstart", "description": "Kom igång online snabbt och kostnadseffektivt.", "discount": "15% rabatt", "valid": "Gäller t.o.m. 30 april" },
+      "1": { "title": "Business Premium", "description": "Skräddarsydd lösning för era verksamhetsbehov.", "discount": "10% rabatt", "valid": "Gäller t.o.m. 30 april" },
+      "2": { "title": "E-handel", "description": "Komplett e-handelslösning för att sälja online.", "discount": "Gratis setup", "valid": "Gäller t.o.m. 30 april" }
+    },
+    "features": {
+      "ssl": {
+        "title": "SSL-certifikat",
+        "description": "Säkra anslutningar och bättre SEO-ranking"
+      },
+      "responsive": {
+        "title": "Responsiv design",
+        "description": "Fungerar perfekt på alla enheter"
+      },
+      "seo": {
+        "title": "Grundläggande SEO",
+        "description": "Optimerad för sökmotorer"
+      },
+      "performance": {
+        "title": "Snabb laddning",
+        "description": "Optimerad prestanda"
+      },
+      "analytics": {
+        "title": "Analysverktyg",
+        "description": "Följ besökarstatistik"
+      },
+      "backup": {
+        "title": "Säker backup",
+        "description": "Automatisk daglig backup"
+      }
+    },
+    "faq": {
+      "title": "Vanliga frågor",
+      "upgrade": {
+        "question": "Kan jag byta paket senare?",
+        "answer": "Ja, du kan när som helst uppgradera eller nedgradera ditt paket. Priset justeras proportionerligt."
+      },
+      "domain": {
+        "question": "Ingår domännamn?",
+        "answer": "Domännamn ingår inte i paketen, men vi hjälper dig gärna att registrera en domän mot självkostnadspris."
+      },
+      "commitment": {
+        "question": "Finns det bindningstid?",
+        "answer": "Nej, alla våra paket är månadsbaserade utan bindningstid. Du kan när som helst avsluta."
+      },
+      "support": {
+        "question": "Vad kostar support?",
+        "answer": "Support ingår i alla paket enligt specifikation. Utökad support kan köpas till."
+      }
+    },
+    "comparison": {
+      "title": "Alla paket innehåller"
+    }
+  },
+  "services": {
+    "title": "Våra tjänster",
+    "subtitle": "Teknisk spetskompetens för era utmaningar",
+    "items": [
+      {
+        "title": "Systemutveckling",
+        "description": "Skräddarsydda system med modern arkitektur – från mikrotjänster till serverless.",
+        "features": ["Node.js / Python / Go", "Mikrotjänster", "Event-driven design"]
+      },
+      {
+        "title": "Webb & App",
+        "description": "Responsiva webbapplikationer och cross-plattform mobila appar.",
+        "features": ["Angular / React / Vue", "React Native", "PWA"]
+      },
+      {
+        "title": "DevOps & Moln",
+        "description": "Automatisering, skalbar infrastruktur och molnoptimering.",
+        "features": ["AWS / Azure / GCP", "Docker / Kubernetes", "CI/CD"]
+      },
+      {
+        "title": "AI & Data",
+        "description": "Maskininlärning, dataanalys och intelligenta system.",
+        "features": ["Python / TensorFlow", "Databaser", "API-integrationer"]
+      }
+    ]
+  },
+  "why": {
+    "title": "Varför SWEPROG?",
+    "subtitle": "Svensk kvalitet möter global innovation",
+    "reasons": [
+      {
+        "icon": "🇸🇪",
+        "title": "Svensk precision",
+        "description": "Vi levererar med samma noggrannhet och kvalitet som kännetecknar svensk ingenjörskonst."
+      },
+      {
+        "icon": "⚡",
+        "title": "Agil leverans",
+        "description": "Korta iterationer, kontinuerlig integration och snabb feedback – utan att tumma på kvaliteten."
+      },
+      {
+        "icon": "🔒",
+        "title": "Säkerhet i fokus",
+        "description": "DevSecOps från dag ett – vi bygger in säkerhet i varje lager av systemet."
+      },
+      {
+        "icon": "🌍",
+        "title": "Global räckvidd",
+        "description": "Våra lösningar är byggda för att skalas globalt, med lokal anpassning."
+      }
+    ]
+  },
+  "process": {
+    "title": "Så arbetar vi",
+    "subtitle": "En beprövad process från idé till produktion",
+    "steps": [
+      {
+        "number": "01",
+        "title": "Förstå",
+        "description": "Vi kartlägger era behov, era mål och era tekniska förutsättningar genom workshops och intervjuer."
+      },
+      {
+        "number": "02",
+        "title": "Designa",
+        "description": "Vi skapar en skalbar arkitektur och teknisk roadmap som möter både dagens och morgondagens krav."
+      },
+      {
+        "number": "03",
+        "title": "Utveckla",
+        "description": "Agil utveckling med ren kod, automatiserad testning och kontinuerlig integration."
+      },
+      {
+        "number": "04",
+        "title": "Förädla",
+        "description": "Vi levererar, övervakar och optimerar – i nära samarbete med er."
+      }
+    ]
+  },
+  "projects": {
+    "title": "Våra projekt",
+    "subtitle": "Lösningar vi är stolta över",
+    "filters": {
+      "all": "Alla",
+      "ongoing": "Pågående",
+      "completed": "Avslutade",
+      "new": "Nya"
+    },
+    "status": {
+      "new": "Nytt",
+      "ongoing": "Pågående",
+      "completed": "Avslutat"
+    },
+    "search": "Sök projekt...",
+    "noResults": "Inga projekt hittades",
+    "createNew": "Nytt projekt",
+    "edit": "Redigera",
+    "delete": "Ta bort",
+    "view": "Visa",
+    "details": "Projektdetaljer",
+    "client": "Kund",
+    "clientName": "Kundnamn",
+    "contact": "Kontaktperson",
+    "email": "E-post",
+    "phone": "Telefon",
+    "statusLabel": "Status",
+    "budget": "Budget",
+    "budgetSEK": "Budget (SEK)",
+    "startDate": "Startdatum",
+    "endDate": "Slutdatum",
+    "deadline": "Deadline",
+    "description": "Beskrivning",
+    "technologies": "Teknologier",
+    "internalComment": "Intern kommentar",
+    "internalCommentPlaceholder": "Syns bara för admins",
+    "team": "Team",
+    "results": "Resultat",
+    "form": {
+      "createTitle": "Nytt projekt",
+      "editTitle": "Redigera projekt",
+      "sectionTitle": "Titel",
+      "sectionDescription": "Beskrivning",
+      "sectionClientInfo": "Kundinformation",
+      "sectionDetails": "Detaljer",
+      "sectionTechnologies": "Teknologier",
+      "sectionInternalComment": "Intern kommentar",
+      "techPlaceholder": "Skriv teknologi och tryck Enter",
+      "addTech": "Lägg till",
+      "saving": "Sparar...",
+      "create": "Skapa projekt",
+      "update": "Uppdatera projekt"
+    },
+    "items": [
+      {
+        "title": "Bokningssystem för Städbolaget",
+        "description": "Komplett bokningssystem med kalenderintegration, SMS-påminnelser och kundportal.",
+        "results": ["40% effektivare", "3 mån leverans"],
+        "tech": ["React", "Node.js", "PostgreSQL"]
+      },
+      {
+        "title": "E-handelsplattform för Modehuset",
+        "description": "Modern plattform med Klarna, Stripe och lagerhantering i realtid.",
+        "results": ["150% högre konvertering", "0.8s laddtid"],
+        "tech": ["Angular", "NestJS", "MongoDB"]
+      },
+      {
+        "title": "AI-kundtjänst för TeleSupport",
+        "description": "Chatbot med maskininlärning som automatiserar 80% av alla kundärenden.",
+        "results": ["80% automatisering", "2 sek svarstid"],
+        "tech": ["Python", "TensorFlow", "OpenAI"]
+      }
+    ]
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Välkommen tillbaka",
+    "guestMode": "Demoläge",
+    "guestInfo": "Du ser dummy-data. Skapa ett riktigt konto för att se verkliga projekt.",
+    "guestWelcome": "Välkommen som gäst - här ser du dummy-data",
+    "stats": {
+      "totalProjects": "Totala projekt",
+      "activeProjects": "Aktiva projekt",
+      "completedProjects": "Avslutade projekt",
+      "teamMembers": "Teammedlemmar",
+      "totalRevenue": "Total intäkt",
+      "avgProjectTime": "Genomsnittlig projekttid"
+    },
+    "recentProjects": "Senaste projekt",
+    "recentActivity": "Senaste aktivitet",
+    "quickActions": "Snabbåtgärder",
+    "viewAll": "Visa alla",
+    "createProject": "Nytt projekt",
+    "manageTeam": "Hantera team",
+    "reports": "Rapporter",
+    "settings": "Inställningar",
+    "viewAllProjects": "Visa alla projekt",
+    "createProjectDesc": "Lägg till ett nytt projekt",
+    "charts": {
+      "projectStatus": "Projektstatus",
+      "projectDistribution": "Fördelning per status",
+      "projectTrend": "Projektutveckling",
+      "last6Months": "Senaste 6 månaderna",
+      "topTechnologies": "Populära teknologier",
+      "mostUsedTech": "Mest använda",
+      "noTechnologies": "Inga teknologier registrerade",
+      "monthlyRevenue": "Månatlig intäkt",
+      "technologyBreakdown": "Teknologier"
+    }
+  },
+  "admin": {
+    "title": "Adminpanel",
+    "dashboard": "Admin Dashboard",
+    "users": {
+      "title": "Användarhantering",
+      "list": "Användare",
+      "create": "Skapa användare",
+      "edit": "Redigera användare",
+      "delete": "Ta bort användare",
+      "details": "Användardetaljer",
+      "fields": {
+        "name": "Namn",
+        "email": "E-post",
+        "role": "Roll",
+        "status": "Status",
+        "created": "Skapad",
+        "lastLogin": "Senaste inloggning"
+      },
+      "roles": {
+        "AllRoles": "Alla roller",
+        "AllStatuses": "Alla statusar",
+        "guest": "Gäst",
+        "user": "Användare",
+        "admin": "Administratör",
+        "super_admin": "Super Admin"
+      },
+      "statuses": {
+        "AllStatuses": "Alla statusar",
+        "active": "Aktiv",
+        "inactive": "Inaktiv",
+        "suspended": "Avstängd"
+      },
+      "actions": {
+        "activate": "Aktivera",
+        "deactivate": "Inaktivera",
+        "suspend": "Stäng av",
+        "resetPassword": "Återställ lösenord"
+      },
+      "setPassword": "Sätt lösenord",
+      "passwordUpdated": "Lösenordet har uppdaterats",
+      "search": "Sök användare...",
+      "noResults": "Inga användare hittades",
+      "confirmDelete": "Är du säker på att du vill ta bort användaren?",
+      "createSuccess": "Användare skapad",
+      "updateSuccess": "Användare uppdaterad",
+      "deleteSuccess": "Användare borttagen"
+    },
+    "projects": {
+      "title": "Projektadmin",
+      "create": "Skapa projekt",
+      "edit": "Redigera projekt",
+      "delete": "Ta bort projekt",
+      "manage": "Hantera projekt"
+    },
+    "settings": {
+      "title": "Inställningar",
+      "general": "Allmänt",
+      "security": "Säkerhet",
+      "integrations": "Integrationer",
+      "backup": "Backup",
+      "logs": "Loggar"
+    }
+  },
+  "profile": {
+    "title": "Min profil",
+    "edit": "Redigera profil",
+    "saved": "Profilen sparades",
+    "currentPassword": "Nuvarande lösenord",
+    "newPassword": "Nytt lösenord",
+    "currentPasswordRequired": "Ange nuvarande lösenord",
+    "settings": "Profilinställningar",
+    "changePassword": "Ändra lösenord",
+    "twoFactor": "Tvåfaktorsautentisering",
+    "apiKeys": "API-nycklar",
+    "notifications": "Notifieringar",
+    "preferences": "Preferenser",
+    "sessions": "Aktiva sessioner",
+    "logoutAll": "Logga ut från alla enheter",
+    "fields": {
+      "name": "Namn",
+      "email": "E-post",
+      "phone": "Telefon",
+      "company": "Företag",
+      "role": "Roll",
+      "language": "Språk",
+      "timezone": "Tidszon"
+    },
+    "saveSuccess": "Profil uppdaterad",
+    "passwordChanged": "Lösenord ändrat"
+  },
+  "contact": {
+    "title": "Kontakta oss",
+    "subtitle": "Vi vill höra om dina utmaningar",
+    "name": "Namn",
+    "email": "E-post",
+    "phone": "Telefon (valfritt)",
+    "company": "Företag",
+    "message": "Berätta om era utmaningar",
+    "gdpr": "Jag godkänner att SWEPROG lagrar mina uppgifter enligt GDPR",
+    "submit": "Skicka förfrågan",
+    "sending": "Skickar...",
+    "success": "Tack för ditt meddelande! Vi återkommer inom 24 timmar.",
+    "error": "Något gick fel. Försök igen senare.",
+    "note": "Vi återkommer inom 24 timmar. Inga förpliktelser.",
+    "officeHours": "Kontorstider",
+    "officeHoursDetail": "Måndag - Fredag: 08:00 - 17:00",
+    "officeHoursClosed": "Lördag - Söndag: Stängt",
+    "sendMessage": "Skicka meddelande",
+    "emailLabel": "E-post",
+    "phoneLabel": "Telefon",
+    "responseTimeLabel": "Svarstid",
+    "responseTimeValue": "Inom ett dygn",
+    "messageSent": "Meddelandet skickat!",
+    "messageSentDesc": "Vi återkommer inom 24 timmar.",
+    "sendAnother": "Skicka ett till",
+    "offerLabel": "Intresserat paket",
+    "offerNone": "Välj paket (valfritt)"
+  },
+  "footer": {
+    "tagline": "Svensk kod med global räckvidd",
+    "services": "Tjänster",
+    "industries": "Industrier",
+    "resources": "Resurser",
+    "company": "Företag",
+    "privacy": "Integritetspolicy",
+    "terms": "Användarvillkor",
+    "cookies": "Cookie-inställningar",
+    "rights": "Alla rättigheter förbehållna"
+  },
+  "common": {
+    "loading": "Laddar...",
+    "save": "Spara",
+    "saving": "Sparar...",
+    "cancel": "Avbryt",
+    "delete": "Ta bort",
+    "edit": "Redigera",
+    "create": "Skapa",
+    "update": "Uppdatera",
+    "back": "Tillbaka",
+    "next": "Nästa",
+    "previous": "Föregående",
+    "confirm": "Bekräfta",
+    "close": "Stäng",
+    "yes": "Ja",
+    "no": "Nej",
+    "search": "Sök",
+    "filter": "Filter",
+    "sort": "Sortera",
+    "export": "Exportera",
+    "import": "Importera",
+    "download": "Ladda ner",
+    "upload": "Ladda upp",
+    "select": "Välj",
+    "all": "Alla",
+    "none": "Ingen",
+    "success": "Lyckades",
+    "error": "Fel",
+    "warning": "Varning",
+    "info": "Info"
+  }
+}

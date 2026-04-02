@@ -1,0 +1,145 @@
+<div class="auth-wrapper">
+  <!-- Canvas för partiklar -->
+  <canvas #particleCanvas class="particle-canvas"></canvas>
+  
+  <!-- 3D Card -->
+  <div class="auth-card"
+       (mousemove)="onMouseMove($event)"
+       (mouseleave)="resetTilt()"
+       [style]="getCardStyle()">
+    
+    <!-- Morphing SVG Background -->
+    <svg class="morph-bg" viewBox="0 0 400 200" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#667eea; stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#764ba2; stop-opacity:1" />
+        </linearGradient>
+      </defs>
+      
+      <!-- Animerad path -->
+      <path [attr.d]="getMorphPath()" fill="url(#gradient)">
+        <animate 
+          *ngIf="isMorphing"
+          attributeName="d" 
+          [attr.from]="getCurrentMorphPath()" 
+          [attr.to]="getTargetMorphPath()" 
+          dur="0.4s" 
+          fill="freeze"
+          calcMode="spline"
+          keySplines="0.4 0 0.2 1"/>
+      </path>
+    </svg>
+
+    <!-- Content -->
+    <div class="auth-content">
+      <div class="auth-header">
+        <h2>{{ mode === 'login' ? 'Välkommen tillbaka' : 'Bli medlem som gäst' }}</h2>
+        <p>{{ mode === 'login' ? 'Logga in för att fortsätta' : 'Skapa konto på 30 sekunder' }}</p>
+      </div>
+
+      <!-- High-tech Mode Toggle -->
+      <div class="mode-toggle">
+        <div class="toggle-track" (click)="switchMode(mode === 'login' ? 'register' : 'login')">
+          <div class="toggle-indicator" [class.login]="mode === 'login'" [class.register]="mode === 'register'">
+            <span class="indicator-text">
+              {{ mode === 'login' ? '🔐' : '✨' }}
+            </span>
+          </div>
+          <span class="toggle-option left" [class.active]="mode === 'login'">Logga in</span>
+          <span class="toggle-option right" [class.active]="mode === 'register'">Skapa konto</span>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <form (ngSubmit)="onSubmit()" class="auth-form">
+        
+        <!-- Register-only fields -->
+        <div class="form-group" *ngIf="mode === 'register'">
+          <div class="input-wrapper">
+            <span class="input-icon">👤</span>
+            <input 
+              type="text" 
+              [(ngModel)]="name" 
+              name="name"
+              placeholder="Fullständigt namn"
+              class="glass-input"
+              [class.error]="errors.length > 0 && !name">
+            <span class="input-border"></span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="input-wrapper">
+            <span class="input-icon">📧</span>
+            <input 
+              type="email" 
+              [(ngModel)]="email" 
+              name="email"
+              placeholder="E-postadress"
+              class="glass-input"
+              [class.error]="errors.length > 0 && !email">
+            <span class="input-border"></span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="input-wrapper">
+            <span class="input-icon">🔒</span>
+            <input 
+              type="password" 
+              [(ngModel)]="password" 
+              name="password"
+              placeholder="Lösenord"
+              class="glass-input"
+              [class.error]="errors.length > 0 && !password">
+            <span class="input-border"></span>
+          </div>
+        </div>
+
+        <div class="form-group" *ngIf="mode === 'register'">
+          <div class="input-wrapper">
+            <span class="input-icon">✓</span>
+            <input 
+              type="password" 
+              [(ngModel)]="confirmPassword" 
+              name="confirmPassword"
+              placeholder="Bekräfta lösenord"
+              class="glass-input"
+              [class.error]="errors.length > 0 && password !== confirmPassword">
+            <span class="input-border"></span>
+          </div>
+        </div>
+
+        <!-- Error messages -->
+        <div class="error-container" *ngIf="errors.length > 0">
+          <div class="error-item" *ngFor="let error of errors">
+            <span class="error-icon">⚠️</span>
+            {{ error }}
+          </div>
+        </div>
+
+        <!-- Submit button -->
+        <button 
+            type="submit" 
+            class="submit-btn" 
+            [class.register-mode]="mode === 'register'"
+            [class.loading]="isLoading"
+            [disabled]="isLoading">
+            <span class="btn-text">{{ getButtonText() }}</span>
+            <span class="btn-glow"></span>
+            <span class="btn-particles"></span>
+        </button>
+
+        <!-- Extra links -->
+        <div class="auth-footer">
+          <a href="#" class="forgot-link" *ngIf="mode === 'login'">Glömt lösenord?</a>
+          <div class="guest-note" *ngIf="mode === 'register'">
+            <span class="note-icon">✨</span>
+            <span>Som gäst får du tillgång till dummy-projekt och kan utforska våra tjänster</span>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

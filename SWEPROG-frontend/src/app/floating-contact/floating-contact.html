@@ -1,0 +1,11 @@
+<div class="floating-container" [class.visible]="isVisible" [style.transform]="getTransform()">
+  <button class="floating-btn" (click)="goToRegister()">
+    <span class="btn-content">
+      <span class="btn-icon">💬</span>
+      <span class="btn-text">Kontakta oss</span>
+      <span class="btn-glow"></span>
+    </span>
+    <span class="btn-particles"></span>
+  </button>
+  <div class="scroll-progress" [style.width.%]="scrollProgress"></div>
+</div>

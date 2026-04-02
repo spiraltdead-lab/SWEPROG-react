@@ -1,0 +1,10 @@
+main {
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* För RTL-stöd */
+[dir="rtl"] main {
+  text-align: right;
+}
